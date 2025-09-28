@@ -506,20 +506,29 @@
           <div class="control-group">
             <label>⚡ Risk Level</label>
             <select id="risk-level">
-              <option value="conservative">Conservative</option>
-              <option value="moderate" selected>Moderate</option>
+              <option value="conservative" selected>Conservative</option>
+              <option value="moderate">Moderate</option>
               <option value="aggressive">Aggressive</option>
             </select>
           </div>
 
           <div class="control-group">
             <label>🎯 TP Multiplier</label>
-            <input type="number" id="tp-multiplier" value="2" step="0.1" min="1" max="5">
+            <input type="number" id="tp-multiplier" value="1.5" step="0.1" min="1" max="5">
           </div>
 
           <div class="control-group">
             <label>💰 Symbol/Pair</label>
             <input type="text" id="symbol" value="BTCUSDT" placeholder="e.g., BTCUSDT">
+          </div>
+          
+          <div class="control-group">
+            <label>🎚️ Signal Filter Strength</label>
+            <select id="filter-strength">
+              <option value="normal">Normal</option>
+              <option value="strict" selected>Strict</option>
+              <option value="very-strict">Very Strict</option>
+            </select>
           </div>
         </div>
 
@@ -688,40 +697,59 @@ let tradeHistory = [];
 // Enhanced Configuration
 const enhancedConfig = {
     volatilityThresholds: {
-        low: 0.005,
-        medium: 0.015,  
-        high: 0.03
+        low: 0.003,    // Reduced from 0.005
+        medium: 0.01,  // Reduced from 0.015
+        high: 0.02     // Reduced from 0.03
     },
     regimeSettings: {
         TRENDING: {
-            minConfidence: 55,
-            rrRatio: 1.8,
-            positionSizeMultiplier: 1.2,
-            filterStrength: 'medium'
-        },
-        RANGING: {
-            minConfidence: 70,
-            rrRatio: 2.2,
-            positionSizeMultiplier: 0.8,
-            filterStrength: 'high'
-        },
-        VOLATILE: {
-            minConfidence: 75,
-            rrRatio: 2.5,
-            positionSizeMultiplier: 0.5,
-            filterStrength: 'very_high'
-        },
-        NEUTRAL: {
-            minConfidence: 65,
+            minConfidence: 70,    // Increased from 55
             rrRatio: 2.0,
             positionSizeMultiplier: 1.0,
-            filterStrength: 'medium'
+            filterStrength: 'high'
+        },
+        RANGING: {
+            minConfidence: 75,    // Increased from 70
+            rrRatio: 1.5,         // Reduced from 2.2
+            positionSizeMultiplier: 0.5, // Reduced from 0.8
+            filterStrength: 'very_high'
+        },
+        VOLATILE: {
+            minConfidence: 80,    // Increased from 75
+            rrRatio: 2.0,         // Reduced from 2.5
+            positionSizeMultiplier: 0.3, // Reduced from 0.5
+            filterStrength: 'extreme'
+        },
+        NEUTRAL: {
+            minConfidence: 72,    // Increased from 65
+            rrRatio: 1.8,         // Reduced from 2.0
+            positionSizeMultiplier: 0.7, // Reduced from 1.0
+            filterStrength: 'high'
         }
     },
     volumeThresholds: {
-        strong: 1.5,
-        moderate: 1.2,
-        weak: 0.8
+        strong: 1.8,    // Increased from 1.5
+        moderate: 1.3,  // Increased from 1.2
+        weak: 0.7       // Reduced from 0.8
+    },
+    
+    // NEW: Trend-specific filters
+    trendFilters: {
+        UPTREND: {
+            minVolume: 1.2,
+            maxRSI: 75,
+            minConfidence: 68
+        },
+        DOWNTREND: {
+            minVolume: 1.4,    // Higher volume required for downtrend
+            maxRSI: 35,        // Only oversold RSI for buys in downtrend
+            minConfidence: 75   // Higher confidence for downtrend trades
+        },
+        RANGING: {
+            minVolume: 1.0,
+            maxRSI: 65,
+            minConfidence: 72
+        }
     }
 };
 
@@ -1194,15 +1222,31 @@ function enhancedPatternDetection(data) {
     return patterns;
 }
 
+// Improved smartStopLoss function with tighter stops
 function smartStopLoss(data, signalType, confidence) {
     const lastClose = data[data.length-1].close;
     const atr = ATR(data);
-    const currentATR = atr[atr.length-1] || lastClose * 0.015;
+    const currentATR = atr[atr.length-1] || lastClose * 0.01; // Reduced default
     
+    // Tighter stops based on confidence and trend
+    let atrMultiplier = 1.5; // Reduced from 2.0
+    
+    if (confidence > 80) {
+        atrMultiplier = 1.2; // Tighter stops for high confidence
+    } else if (confidence < 60) {
+        atrMultiplier = 2.0; // Wider stops for low confidence
+    }
+    
+    // Even tighter stops in ranging markets
+    const regimeAnalysis = enhancedMarketRegimeDetection(data);
+    if (regimeAnalysis.regime === 'RANGING') {
+        atrMultiplier *= 0.8;
+    }
+
     if (signalType === 'BUY') {
-        return lastClose - (currentATR * 2);
+        return lastClose - (currentATR * atrMultiplier);
     } else {
-        return lastClose + (currentATR * 2);
+        return lastClose + (currentATR * atrMultiplier);
     }
 }
 
@@ -1210,7 +1254,7 @@ function smartStopLoss(data, signalType, confidence) {
    Enhanced Signal Generation with Trend Detection
    ------------------------- */
 function generateEnhancedSignal(data, riskLevel, tpMultiplier){
-  if(!data || data.length < 30) return { 
+  if(!data || data.length < 50) return { 
     signal:"HOLD", 
     entry: data.length > 0 ? data[data.length-1].close : 0, 
     tp: 0, sl: 0, confidence:0, rr: 0, 
@@ -1222,17 +1266,18 @@ function generateEnhancedSignal(data, riskLevel, tpMultiplier){
   const last = data[data.length-1];
   const lastClose = last.close;
 
-  // Enhanced volatility filter
-  if (data.length > 10) {
-    const recentCloses = data.slice(-10).map(c => c.close);
+  // Enhanced volatility filter with stricter thresholds
+  if (data.length > 15) {
+    const recentCloses = data.slice(-15).map(c => c.close);
     const volatility = Math.max(...recentCloses) - Math.min(...recentCloses);
     const volatilityPercent = volatility / lastClose;
     
-    if (volatilityPercent < 0.001) {
+    // Stricter volatility filter
+    if (volatilityPercent < 0.002) {
       return { 
         signal:"HOLD", 
         entry: lastClose, tp: lastClose, sl: lastClose, 
-        confidence: 5, rr: 0, confirmations: [], 
+        confidence: 5, rr: 0, confirmations: ["LOW_VOLATILITY"], 
         marketRegime: "LOW_VOLATILITY", volumeConfirmation: "N/A", patterns: [],
         trend: "NEUTRAL", trendStrength: 0, retracement: { isRetracement: false, level: 0, completion: 0 },
         fvGaps: []
@@ -1246,167 +1291,172 @@ function generateEnhancedSignal(data, riskLevel, tpMultiplier){
   
   const sma20 = SMA(data, 20);
   const sma50 = SMA(data, 50);
+  const sma100 = SMA(data, 100);
   
   const volumeAnalysis = volumeConfirmation(data);
   const regimeAnalysis = enhancedMarketRegimeDetection(data);
   const patterns = enhancedPatternDetection(data);
   
-  // NEW: Trend detection
+  // Trend detection
   const trendAnalysis = detectTrendType(data);
   const retracementAnalysis = detectRetracement(data, trendAnalysis);
   const fvGaps = detectFairValueGaps(data);
+
+  // NEW: Stricter trend-based filters
+  const trendFilter = enhancedConfig.trendFilters[trendAnalysis.trend] || enhancedConfig.trendFilters.RANGING;
   
+  // Filter 1: Volume requirement by trend
+  if (volumeAnalysis.ratio < trendFilter.minVolume) {
+    return { 
+        signal:"HOLD", 
+        entry: lastClose, tp: lastClose, sl: lastClose, 
+        confidence: 10, rr: 0, confirmations: ["LOW_VOLUME_FOR_TREND"], 
+        marketRegime: regimeAnalysis.regime, volumeConfirmation: volumeAnalysis.strength, patterns: [],
+        trend: trendAnalysis.trend, trendStrength: trendAnalysis.strength, 
+        retracement: retracementAnalysis, fvGaps: fvGaps.length
+    };
+  }
+
   let buySignals = 0;
   let sellSignals = 0;
   let totalSignals = 0;
   let confirmations = [];
 
-  // 1. RSI signals
+  // 1. RSI signals with trend-based filters
   if (currentRsi !== null) {
     totalSignals++;
-    if (currentRsi < 30) {
-      buySignals += 2;
-      confirmations.push(`RSI Oversold (${currentRsi.toFixed(1)})`);
-    } else if (currentRsi < 40) {
-      buySignals += 1;
-    } else if (currentRsi > 70) {
-      sellSignals += 2;
-      confirmations.push(`RSI Overbought (${currentRsi.toFixed(1)})`);
-    } else if (currentRsi > 60) {
-      sellSignals += 1;
-    }
-  }
-
-  // 2. Moving average signals
-  if (sma20[sma20.length-1] && sma50[sma50.length-1]) {
-    totalSignals += 2;
-    if (sma20[sma20.length-1] > sma50[sma50.length-1]) {
-      buySignals += 2;
-      confirmations.push("Bullish MA Alignment");
+    
+    // Stricter RSI conditions based on trend
+    if (trendAnalysis.trend === "UPTREND") {
+      if (currentRsi < 28) { // More oversold in uptrend
+        buySignals += 2;
+        confirmations.push(`RSI Oversold in Uptrend (${currentRsi.toFixed(1)})`);
+      } else if (currentRsi > 75) { // Lower overbought threshold in uptrend
+        sellSignals += 1;
+      }
+    } else if (trendAnalysis.trend === "DOWNTREND") {
+      if (currentRsi > 72) { // More overbought in downtrend
+        sellSignals += 2;
+        confirmations.push(`RSI Overbought in Downtrend (${currentRsi.toFixed(1)})`);
+      } else if (currentRsi < 25) { // Lower oversold threshold in downtrend
+        buySignals += 1;
+      }
     } else {
-      sellSignals += 2;
-      confirmations.push("Bearish MA Alignment");
+      // RANGING or NEUTRAL
+      if (currentRsi < 25) {
+        buySignals += 2;
+        confirmations.push(`RSI Oversold (${currentRsi.toFixed(1)})`);
+      } else if (currentRsi > 75) {
+        sellSignals += 2;
+        confirmations.push(`RSI Overbought (${currentRsi.toFixed(1)})`);
+      }
     }
   }
 
-  // 3. Volume confirmation
+  // 2. Moving average signals - require stronger confirmation
+  if (sma20[sma20.length-1] && sma50[sma50.length-1] && sma100[sma100.length-1]) {
+    totalSignals += 2;
+    
+    // Require price to be significantly above/below MAs
+    const priceVsSMA20 = (lastClose - sma20[sma20.length-1]) / sma20[sma20.length-1];
+    const priceVsSMA50 = (lastClose - sma50[sma50.length-1]) / sma50[sma50.length-1];
+    
+    if (sma20[sma20.length-1] > sma50[sma50.length-1] && sma50[sma50.length-1] > sma100[sma100.length-1] && priceVsSMA20 > 0.002) {
+      buySignals += 2;
+      confirmations.push("Strong Bullish MA Alignment");
+    } else if (sma20[sma20.length-1] < sma50[sma50.length-1] && sma50[sma50.length-1] < sma100[sma100.length-1] && priceVsSMA20 < -0.002) {
+      sellSignals += 2;
+      confirmations.push("Strong Bearish MA Alignment");
+    }
+  }
+
+  // 3. Volume confirmation - stricter
   totalSignals += 2;
-  if (volumeAnalysis.score > 0) {
+  if (volumeAnalysis.score > 0 && volumeAnalysis.ratio > 1.5) {
     buySignals += volumeAnalysis.score;
-    confirmations.push(`Volume Confirmation (${volumeAnalysis.strength})`);
-  } else if (volumeAnalysis.score < 0) {
+    confirmations.push(`Strong Volume Confirmation (${volumeAnalysis.strength})`);
+  } else if (volumeAnalysis.score < 0 || volumeAnalysis.ratio < 0.8) {
     sellSignals += Math.abs(volumeAnalysis.score);
     confirmations.push(`Volume Weakness (${volumeAnalysis.strength})`);
   }
 
-  // 4. Pattern-based signals
+  // 4. Pattern-based signals - require volume confirmation
   patterns.forEach(pattern => {
     totalSignals++;
-    if (pattern === "BULL_ENGULFING") {
+    if (pattern === "BULL_ENGULFING" && volumeAnalysis.ratio > 1.3) {
       buySignals += 2;
-      confirmations.push(pattern);
-    } else if (pattern === "BEAR_ENGULFING") {
+      confirmations.push(`${pattern} with Volume`);
+    } else if (pattern === "BEAR_ENGULFING" && volumeAnalysis.ratio > 1.3) {
       sellSignals += 2;
-      confirmations.push(pattern);
+      confirmations.push(`${pattern} with Volume`);
     }
   });
 
-  // 5. Price momentum
-  if (data.length > 3) {
+  // 5. Price momentum - require stronger momentum
+  if (data.length > 5) {
     totalSignals++;
-    const prev1 = data[data.length-2].close;
-    const prev2 = data[data.length-3].close;
+    const momentum = (lastClose - data[data.length-5].close) / data[data.length-5].close;
     
-    if (lastClose > prev1 && prev1 > prev2) {
+    if (momentum > 0.008) { // Increased threshold
       buySignals += 1;
-    } else if (lastClose < prev1 && prev1 < prev2) {
+    } else if (momentum < -0.008) { // Increased threshold
       sellSignals += 1;
     }
   }
 
-  // 6. TREND-BASED SIGNAL ADJUSTMENT (NEW)
-  // Apply trend filtering to prevent counter-trend signals
+  // 6. TREND-BASED SIGNAL ADJUSTMENT - IMPROVED
   if (trendAnalysis.trend === "UPTREND") {
-    // In uptrend, favor BUY signals and penalize SELL signals
     if (buySignals > 0) {
-      buySignals += Math.floor(trendAnalysis.strength / 10); // Boost buy signals
-      confirmations.push(`Uptrend Confirmation (Strength: ${trendAnalysis.strength.toFixed(1)})`);
+      buySignals += Math.floor(trendAnalysis.strength / 8); // Slightly reduced boost
     }
     if (sellSignals > 0) {
-      sellSignals = Math.max(0, sellSignals - Math.floor(trendAnalysis.strength / 5)); // Penalize sell signals
+      sellSignals = Math.max(0, sellSignals - Math.floor(trendAnalysis.strength / 3)); // Increased penalty
     }
   } else if (trendAnalysis.trend === "DOWNTREND") {
-    // In downtrend, favor SELL signals and penalize BUY signals
+    // NEW: Much stricter filtering in downtrend
     if (sellSignals > 0) {
-      sellSignals += Math.floor(trendAnalysis.strength / 10); // Boost sell signals
-      confirmations.push(`Downtrend Confirmation (Strength: ${trendAnalysis.strength.toFixed(1)})`);
+      sellSignals += Math.floor(trendAnalysis.strength / 8);
     }
     if (buySignals > 0) {
-      buySignals = Math.max(0, buySignals - Math.floor(trendAnalysis.strength / 5)); // Penalize buy signals
-    }
-  } else if (trendAnalysis.trend === "RANGING") {
-    // In ranging market, look for support/resistance bounces
-    const supports = findSupportResistance(data).support;
-    const resistances = findSupportResistance(data).resistance;
-    
-    if (supports.length > 0 && resistances.length > 0) {
-      const nearestSupport = Math.max(...supports.filter(s => s < lastClose));
-      const nearestResistance = Math.min(...resistances.filter(r => r > lastClose));
-      
-      const supportDistance = Math.abs(lastClose - nearestSupport) / lastClose;
-      const resistanceDistance = Math.abs(lastClose - nearestResistance) / lastClose;
-      
-      if (supportDistance < 0.005) { // Within 0.5% of support
-        buySignals += 2;
-        confirmations.push("Near Support Level");
-      } else if (resistanceDistance < 0.005) { // Within 0.5% of resistance
-        sellSignals += 2;
-        confirmations.push("Near Resistance Level");
+      // Heavily penalize buy signals in strong downtrend
+      buySignals = Math.max(0, buySignals - Math.floor(trendAnalysis.strength / 2));
+      if (trendAnalysis.strength > 70) {
+        buySignals = 0; // No buy signals in strong downtrend
+        confirmations.push("No buys in strong downtrend");
       }
     }
   }
 
-  // 7. RETRACEMENT SIGNALS (NEW)
+  // 7. RETRACEMENT SIGNALS - IMPROVED
   if (retracementAnalysis.isRetracement) {
-    if (trendAnalysis.direction === "UP" && retracementAnalysis.completion > 0.7) {
-      // Uptrend retracement almost complete - good time to buy
+    if (trendAnalysis.direction === "UP" && retracementAnalysis.completion > 0.8) { // Increased to 80%
       buySignals += 3;
-      confirmations.push(`Retracement Complete (${(retracementAnalysis.completion * 100).toFixed(1)}%)`);
-    } else if (trendAnalysis.direction === "DOWN" && retracementAnalysis.completion > 0.7) {
-      // Downtrend retracement almost complete - good time to sell
+      confirmations.push(`Deep Retracement Complete (${(retracementAnalysis.completion * 100).toFixed(1)}%)`);
+    } else if (trendAnalysis.direction === "DOWN" && retracementAnalysis.completion > 0.8) { // Increased to 80%
       sellSignals += 3;
-      confirmations.push(`Retracement Complete (${(retracementAnalysis.completion * 100).toFixed(1)}%)`);
+      confirmations.push(`Deep Retracement Complete (${(retracementAnalysis.completion * 100).toFixed(1)}%)`);
     }
   }
 
-  // 8. FAIR VALUE GAP SIGNALS (NEW)
-  fvGaps.forEach(gap => {
-    if (isPriceInFVG(lastClose, gap)) {
-      if (gap.direction === "BULLISH") {
-        buySignals += 2;
-        confirmations.push("Price in Bullish FVG");
-      } else if (gap.direction === "BEARISH") {
-        sellSignals += 2;
-        confirmations.push("Price in Bearish FVG");
-      }
-    }
-  });
-
-  // Enhanced confidence calculation
+  // Enhanced confidence calculation with trend minimum
   const rawConfidence = totalSignals > 0 ? Math.min(100, (Math.max(buySignals, sellSignals) / totalSignals) * 100) : 0;
+  
+  // Apply trend-based minimum confidence
+  const minTrendConfidence = trendFilter.minConfidence;
+  const adjustedConfidence = Math.max(rawConfidence, minTrendConfidence);
   
   // Adjust confidence based on regime and volume
   let regimeMultiplier = 1.0;
   switch(regimeAnalysis.regime) {
     case 'TRENDING': regimeMultiplier = 1.1; break;
-    case 'RANGING': regimeMultiplier = 0.9; break;
-    case 'VOLATILE': regimeMultiplier = 0.8; break;
+    case 'RANGING': regimeMultiplier = 0.85; break; // Reduced multiplier
+    case 'VOLATILE': regimeMultiplier = 0.7; break;  // Reduced multiplier
   }
   
   const volumeMultiplier = volumeAnalysis.score > 0 ? 1.1 : volumeAnalysis.score < 0 ? 0.9 : 1.0;
-  const enhancedConfidence = Math.min(100, rawConfidence * regimeMultiplier * volumeMultiplier);
+  const enhancedConfidence = Math.min(100, adjustedConfidence * regimeMultiplier * volumeMultiplier);
 
-  // Enhanced signal determination
+  // Enhanced signal determination with stricter conditions
   let signal = "HOLD";
   let entry = lastClose;
   let tp = lastClose;
@@ -1415,17 +1465,27 @@ function generateEnhancedSignal(data, riskLevel, tpMultiplier){
 
   const regimeSettings = enhancedConfig.regimeSettings[regimeAnalysis.regime] || enhancedConfig.regimeSettings.NEUTRAL;
   const minConfidence = regimeSettings.minConfidence;
-  const requiredRatio = 1.5;
+  
+  // Dynamic required ratio based on trend strength
+  let requiredRatio = 1.8; // Increased base ratio
+  if (trendAnalysis.strength > 60) {
+    requiredRatio = 1.5; // Lower ratio in strong trends
+  } else if (trendAnalysis.strength < 30) {
+    requiredRatio = 2.2; // Higher ratio in weak trends
+  }
 
-  if (buySignals > sellSignals * requiredRatio && enhancedConfidence >= minConfidence) {
+  // NEW: Additional filter for downtrend buy signals
+  const isStrongDowntrend = trendAnalysis.trend === "DOWNTREND" && trendAnalysis.strength > 60;
+  
+  if (buySignals > sellSignals * requiredRatio && enhancedConfidence >= minConfidence && !(isStrongDowntrend && buySignals > 0)) {
     signal = "BUY";
     sl = smartStopLoss(data, 'BUY', enhancedConfidence);
-    const risk = entry - sl;
+    const risk = Math.max(entry - sl, entry * 0.002); // Minimum 0.2% risk
     tp = entry + (risk * tpMultiplier);
   } else if (sellSignals > buySignals * requiredRatio && enhancedConfidence >= minConfidence) {
     signal = "SELL";
     sl = smartStopLoss(data, 'SELL', enhancedConfidence);
-    const risk = sl - entry;
+    const risk = Math.max(sl - entry, entry * 0.002); // Minimum 0.2% risk
     tp = entry - (risk * tpMultiplier);
   }
 
