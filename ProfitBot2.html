@@ -9,7 +9,7 @@
   
   body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2a 50%, #0f0f1a 100%);
     color: #e0e0e0; 
     min-height: 100vh;
     padding: 20px;
@@ -24,7 +24,7 @@
     text-align: center;
     margin-bottom: 30px;
     padding: 20px;
-    background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+    background: linear-gradient(45deg, #1a1a2a, #2a2a3a);
     border-radius: 20px;
     border: 1px solid #333;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -46,7 +46,7 @@
   }
   
   .main-panel {
-    background: linear-gradient(145deg, #1a1a1a, #252525);
+    background: linear-gradient(145deg, #1a1a2a, #252535);
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
@@ -82,7 +82,7 @@
     padding: 12px 15px; 
     border-radius: 10px; 
     border: 2px solid #333; 
-    background: linear-gradient(145deg, #0f0f0f, #1a1a1a); 
+    background: linear-gradient(145deg, #0f0f1a, #1a1a2a); 
     color: #fff;
     font-size: 15px;
     transition: all 0.3s ease;
@@ -203,7 +203,7 @@
   }
   
   .signals-feed {
-    background: linear-gradient(145deg, #1a1a1a, #252525);
+    background: linear-gradient(145deg, #1a1a2a, #252535);
     border-radius: 20px;
     padding: 20px;
     border: 1px solid #333;
@@ -225,15 +225,15 @@
     max-height: 450px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #00eaff #1a1a1a;
+    scrollbar-color: #00eaff #1a1a2a;
   }
   
   .signals-container::-webkit-scrollbar { width: 8px; }
-  .signals-container::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 10px; }
+  .signals-container::-webkit-scrollbar-track { background: #1a1a2a; border-radius: 10px; }
   .signals-container::-webkit-scrollbar-thumb { background: #00eaff; border-radius: 10px; }
   
   .signal-card {
-    background: linear-gradient(145deg, #222, #2a2a2a);
+    background: linear-gradient(145deg, #222, #2a2a3a);
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 12px;
@@ -289,7 +289,7 @@
   }
   
   .status-panel {
-    background: linear-gradient(145deg, #1a1a1a, #252525);
+    background: linear-gradient(145deg, #1a1a2a, #252535);
     border-radius: 20px;
     padding: 20px;
     border: 1px solid #333;
@@ -339,7 +339,7 @@
   }
   
   .tab-content {
-    background: linear-gradient(145deg, #1a1a1a, #252525);
+    background: linear-gradient(145deg, #1a1a2a, #252535);
     border-radius: 20px;
     padding: 25px;
     border: 1px solid #333;
@@ -415,7 +415,7 @@
   
   /* NEW: Active Trade Panel */
   .active-trade-panel {
-    background: linear-gradient(145deg, #1a1a1a, #252525);
+    background: linear-gradient(145deg, #1a1a2a, #252535);
     border-radius: 20px;
     padding: 20px;
     border: 1px solid #333;
@@ -527,6 +527,41 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
+  /* NEW: Telegram Alert Settings */
+  .telegram-panel {
+    background: linear-gradient(145deg, #1a2a3a, #253545);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #0088cc;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  
+  .telegram-panel h4 {
+    color: #0088cc;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+  }
+  
+  .telegram-status {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  
+  .telegram-status.connected {
+    background: rgba(0, 136, 204, 0.1);
+    border: 1px solid #0088cc;
+    color: #0088cc;
+  }
+  
+  .telegram-status.disconnected {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #cccccc;
+    color: #cccccc;
+  }
+  
   /* Responsive Design */
   @media (max-width: 1200px) {
     .layout {
@@ -600,18 +635,7 @@
 
           <div class="control-group">
             <label>💰 Symbol/Pair</label>
-            <select id="symbol">
-              <option value="XRPUSDT" selected>XRP/USDT</option>
-              <option value="BTCUSDT">BTC/USDT</option>
-              <option value="ETHUSDT">ETH/USDT</option>
-              <option value="ADAUSDT">ADA/USDT</option>
-              <option value="DOTUSDT">DOT/USDT</option>
-              <option value="LINKUSDT">LINK/USDT</option>
-              <option value="LTCUSDT">LTC/USDT</option>
-              <option value="BCHUSDT">BCH/USDT</option>
-              <option value="XLMUSDT">XLM/USDT</option>
-              <option value="EOSUSDT">EOS/USDT</option>
-            </select>
+            <input type="text" id="symbol" value="BTCUSDT" placeholder="e.g., BTCUSDT">
           </div>
           
           <div class="control-group">
@@ -635,15 +659,6 @@
             </select>
           </div>
 
-          <!-- NEW: Exchange Selection -->
-          <div class="control-group">
-            <label>🏦 Exchange</label>
-            <select id="exchange">
-              <option value="bitget" selected>Bitget</option>
-              <option value="binance">Binance</option>
-            </select>
-          </div>
-
           <!-- NEW: Circuit Breaker Settings -->
           <div class="control-group">
             <label>⚡ Circuit Breaker</label>
@@ -651,6 +666,20 @@
               <option value="auto" selected>Auto (Recommended)</option>
               <option value="enabled">Enabled</option>
               <option value="disabled">Disabled</option>
+            </select>
+          </div>
+
+          <!-- NEW: Telegram Settings -->
+          <div class="control-group">
+            <label>📱 Telegram Chat ID</label>
+            <input type="text" id="telegram-chat-id" placeholder="Enter your Telegram Chat ID">
+          </div>
+          
+          <div class="control-group">
+            <label>🔔 Telegram Alerts</label>
+            <select id="telegram-alerts">
+              <option value="enabled">Enabled</option>
+              <option value="disabled" selected>Disabled</option>
             </select>
           </div>
         </div>
@@ -662,6 +691,8 @@
           <button id="unlock-btn" onclick="unlockSignal()">🔓 UNLOCK SIGNAL</button>
           <!-- NEW: Recovery Button -->
           <button id="recover-btn" onclick="attemptRecovery()" style="background: linear-gradient(45deg, #00aaff, #0088cc); color: white; display: none;">🔄 RECOVER BOT</button>
+          <!-- NEW: Test Telegram Button -->
+          <button id="test-telegram-btn" onclick="testTelegramAlert()" style="background: linear-gradient(45deg, #0088cc, #006699); color: white;">📱 TEST TELEGRAM</button>
         </div>
 
         <div class="signal-display">
@@ -711,6 +742,20 @@
             <div><strong>SL:</strong> <span id="active-trade-sl">-</span></div>
             <div><strong>Current P/L:</strong> <span id="active-trade-pl">-</span></div>
             <div><strong>Status:</strong> <span id="active-trade-result">-</span></div>
+          </div>
+        </div>
+
+        <!-- NEW: Telegram Panel -->
+        <div class="telegram-panel">
+          <h4>📱 Telegram Alerts</h4>
+          <div id="telegram-status" class="telegram-status disconnected">
+            Disconnected
+          </div>
+          <div class="trade-details">
+            <div><strong>Last Alert:</strong> <span id="last-alert-time">-</span></div>
+            <div><strong>Alerts Sent:</strong> <span id="alerts-sent">0</span></div>
+            <div><strong>Status:</strong> <span id="telegram-connection">-</span></div>
+            <div><strong>Bot Username:</strong> <span id="telegram-bot-username">@TradingSignalBot</span></div>
           </div>
         </div>
 
@@ -912,6 +957,12 @@ let strategyScores = {};
 let adaptiveScores = [];
 let currentORBLevels = null;
 
+// NEW: Telegram integration
+const TELEGRAM_BOT_TOKEN = "8291213377:AAHdU03ohPE4WeLd7neei12z41fgp0sOytA";
+let telegramAlertsEnabled = false;
+let telegramChatId = null;
+let alertsSent = 0;
+
 // Trading sessions in UTC
 const TRADING_SESSIONS = {
   ASIAN: { start: 0, end: 9 },
@@ -919,578 +970,896 @@ const TRADING_SESSIONS = {
   NEWYORK: { start: 13, end: 22 }
 };
 
-// 🔧 UPDATED: Enhanced Configuration with XRP Optimizations
+// Enhanced Configuration with Adaptive Strategy
 const enhancedConfig = {
-    // 🔧 PRECISION: Optimized regime settings based on XRP backtest
+    volatilityThresholds: {
+        low: 0.003,
+        medium: 0.01,
+        high: 0.02
+    },
     regimeSettings: {
         TRENDING: {
-            minConfidence: 62, // Further reduced for XRP
-            rrRatio: 2.2,
-            positionSizeMultiplier: 1.1,
+            minConfidence: 55, // REDUCED from 70
+            rrRatio: 2.0,
+            positionSizeMultiplier: 1.0,
             filterStrength: 'high'
         },
         RANGING: {
-            minConfidence: 68, // Slightly increased for ranging
-            rrRatio: 1.6,
-            positionSizeMultiplier: 0.6,
+            minConfidence: 60, // REDUCED from 75
+            rrRatio: 1.5,
+            positionSizeMultiplier: 0.5,
             filterStrength: 'very_high'
         },
         VOLATILE: {
-            minConfidence: 72, // Reduced for XRP volatility
+            minConfidence: 65, // REDUCED from 80
             rrRatio: 2.0,
-            positionSizeMultiplier: 0.4,
+            positionSizeMultiplier: 0.3,
             filterStrength: 'extreme'
         },
         NEUTRAL: {
-            minConfidence: 65, // Reduced
-            rrRatio: 1.9,
-            positionSizeMultiplier: 0.8,
+            minConfidence: 58, // REDUCED from 72
+            rrRatio: 1.8,
+            positionSizeMultiplier: 0.7,
             filterStrength: 'high'
         }
     },
-    
-    // 🔧 PRECISION: Optimized weights for XRP based on backtest
-    adaptiveWeights: {
-        TRENDING: { enhanced: 0.85, crt: 0.4, orb: 0.3, smc: 0.7 },
-        RANGING: { enhanced: 0.7, crt: 0.8, orb: 0.9, smc: 0.5 },
-        VOLATILE: { enhanced: 0.8, crt: 0.5, orb: 0.2, smc: 0.9 },
-        NEUTRAL: { enhanced: 0.75, crt: 0.8, orb: 0.7, smc: 0.6 }
+    volumeThresholds: {
+        strong: 1.8,
+        moderate: 1.3,
+        weak: 0.7
     },
     
-    // 🔧 PRECISION: Strategy conditions optimized for XRP
+    // NEW: Adaptive strategy weights
+    adaptiveWeights: {
+        TRENDING: { enhanced: 0.8, crt: 0.6, orb: 0.4, smc: 0.7 },
+        RANGING: { enhanced: 0.4, crt: 0.9, orb: 0.8, smc: 0.6 },
+        VOLATILE: { enhanced: 0.5, crt: 0.7, orb: 0.3, smc: 0.9 },
+        NEUTRAL: { enhanced: 0.7, crt: 0.8, orb: 0.6, smc: 0.5 }
+    },
+    
+    // Strategy-specific conditions
     strategyConditions: {
         enhanced: {
-            minTrendStrength: 25, // Reduced for XRP
-            maxVolatility: 0.035, // Increased for XRP
-            volumeMultiplier: 1.1
+            minTrendStrength: 15, // REDUCED from 30
+            maxVolatility: 0.03,
+            volumeMultiplier: 1.2
         },
         crt: {
-            minRangeSize: 0.004, // Adjusted for XRP
-            maxVolatility: 0.025,
-            volumeMultiplier: 0.9
+            minRangeSize: 0.002, // REDUCED from 0.005
+            maxVolatility: 0.02,
+            volumeMultiplier: 1.0
         },
         orb: {
-            sessionStartWindow: 15,
-            minRangeSize: 0.0025, // Reduced for XRP
-            volumeMultiplier: 1.3
+            sessionStartWindow: 15, // minutes
+            minRangeSize: 0.0015, // REDUCED from 0.003
+            volumeMultiplier: 1.5
         },
         smc: {
             minOrderBlocks: 1,
             minLiquiditySweeps: 1,
-            volumeMultiplier: 1.2
+            volumeMultiplier: 1.3
         }
     },
     
-    // 🔧 NEW: XRP-specific optimizations
-    xrpOptimizations: {
-        trendSensitivity: 0.8, // XRP tends to have weaker trends
-        volatilityMultiplier: 1.2, // XRP is more volatile
-        sessionStrength: 1.1, // XRP performs better in specific sessions
-        minAtrForEntry: 0.008 // Minimum ATR for valid signals
+    // 🔧 UPDATED: Relaxed Trend confirmation settings
+    trendConfirmation: {
+        minTrendStrength: 10, // REDUCED from 25
+        requiredTimeframes: 2,
+        maxCounterTrendEntries: 3, // INCREASED from 1
+        volumeConfirmation: 1.0, // REDUCED from 1.2
+        rsiThresholds: {
+            uptrend: { max: 80, min: 30 }, // WIDENED ranges
+            downtrend: { max: 70, min: 20 },
+            neutral: { max: 85, min: 15 }
+        }
     },
     
-    // 🔧 PRECISION: Enhanced stop loss for XRP
-    stopLossOptimization: {
-        atrMultiplier: 1.25, // Tighter for XRP
-        maxRiskPercent: 0.012, // 1.2% max risk for XRP
-        trailingStart: 0.01, // Start trailing at 1% profit
-        trailingStep: 0.005, // Trail by 0.5%
-        volatilityAdjustment: true // Adjust SL based on current volatility
+    // 🔧 UPDATED: Multi-timeframe analysis
+    multiTimeframeWeights: {
+        '1m': 0.1,
+        '5m': 0.3, 
+        '15m': 0.4,
+        '1h': 0.2
     }
 };
 
 /* -------------------------
-   🔧 NEW: BITGET SUPPORT FUNCTIONS
+   NEW: TELEGRAM ALERTS FUNCTIONALITY
    ------------------------- */
-function getExchangeEndpoints(exchange, symbol, interval) {
-    const timeframeMapping = {
-        '1m': '1min',
-        '5m': '5min',
-        '15m': '15min',
-        '1h': '1h',
-        '4h': '4h'
-    };
-
-    if (exchange === 'bitget') {
-        return {
-            historical: `https://api.bitget.com/api/spot/v1/market/candles?symbol=${symbol}&period=${timeframeMapping[interval]}&limit=${BUFFER_SIZE}`,
-            websocket: `wss://ws.bitget.com/spot/v1/stream`
-        };
-    } else { // binance
-        return {
-            historical: `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${BUFFER_SIZE}`,
-            websocket: `wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_${interval}`
-        };
+async function sendTelegramAlert(message) {
+    if (!telegramAlertsEnabled || !telegramChatId) {
+        return false;
     }
-}
-
-function parseCandleData(exchange, data) {
-    if (exchange === 'bitget') {
-        // Bitget format: [timestamp, open, high, low, close, volume, quote_volume]
-        return {
-            time: parseInt(data[0]),
-            open: parseFloat(data[1]),
-            high: parseFloat(data[2]),
-            low: parseFloat(data[3]),
-            close: parseFloat(data[4]),
-            volume: parseFloat(data[5])
-        };
-    } else { // binance
-        // Binance format: [0: open time, 1: open, 2: high, 3: low, 4: close, 5: volume]
-        return {
-            time: data[0],
-            open: parseFloat(data[1]),
-            high: parseFloat(data[2]),
-            low: parseFloat(data[3]),
-            close: parseFloat(data[4]),
-            volume: parseFloat(data[5])
-        };
-    }
-}
-
-function parseWebSocketData(exchange, message) {
+    
     try {
-        const data = JSON.parse(message.data);
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: telegramChatId,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
         
-        if (exchange === 'bitget') {
-            if (data.data && data.data.length > 0) {
-                const candleData = data.data[0];
-                return {
-                    time: parseInt(candleData[0]),
-                    open: parseFloat(candleData[1]),
-                    high: parseFloat(candleData[2]),
-                    low: parseFloat(candleData[3]),
-                    close: parseFloat(candleData[4]),
-                    volume: parseFloat(candleData[5]),
-                    isClosed: true // Bitget sends complete candles
-                };
-            }
-        } else { // binance
-            if (data.k) {
-                const k = data.k;
-                return {
-                    time: k.t,
-                    open: parseFloat(k.o),
-                    high: parseFloat(k.h),
-                    low: parseFloat(k.l),
-                    close: parseFloat(k.c),
-                    volume: parseFloat(k.v),
-                    isClosed: k.x
-                };
-            }
+        const result = await response.json();
+        
+        if (result.ok) {
+            alertsSent++;
+            document.getElementById('alerts-sent').textContent = alertsSent;
+            document.getElementById('last-alert-time').textContent = new Date().toLocaleTimeString();
+            document.getElementById('telegram-status').textContent = '✅ Alert Sent';
+            document.getElementById('telegram-status').className = 'telegram-status connected';
+            
+            setTimeout(() => {
+                document.getElementById('telegram-status').textContent = 'Connected';
+            }, 3000);
+            
+            return true;
+        } else {
+            console.error('Telegram API error:', result);
+            document.getElementById('telegram-status').textContent = '❌ Alert Failed';
+            document.getElementById('telegram-status').className = 'telegram-status disconnected';
+            return false;
         }
     } catch (error) {
-        logError(error, 'WebSocket Data Parsing');
+        console.error('Failed to send Telegram alert:', error);
+        document.getElementById('telegram-status').textContent = '❌ Connection Error';
+        document.getElementById('telegram-status').className = 'telegram-status disconnected';
+        return false;
     }
-    return null;
 }
 
-function getWebSocketSubscribeMessage(exchange, symbol, interval) {
-    if (exchange === 'bitget') {
-        const channelMap = {
-            '1m': 'candle1m',
-            '5m': 'candle5m',
-            '15m': 'candle15m',
-            '1h': 'candle1h',
-            '4h': 'candle4h'
-        };
-        return JSON.stringify({
-            op: "subscribe",
-            args: [{
-                instType: "SPOT",
-                channel: channelMap[interval],
-                instId: symbol
-            }]
-        });
-    }
-    return null; // Binance doesn't need subscribe message
+function sendSignalTelegramAlert(symbol, signal, entry, tp, sl, confidence, strategy, marketRegime) {
+    const emoji = signal === 'BUY' ? '🟢' : signal === 'SELL' ? '🔴' : '⚪';
+    const message = `
+${emoji} <b>TRADING SIGNAL ALERT</b> ${emoji}
+
+<b>Symbol:</b> ${symbol}
+<b>Signal:</b> <code>${signal}</code>
+<b>Strategy:</b> ${strategy}
+<b>Entry:</b> ${entry.toFixed(4)}
+<b>Take Profit:</b> ${tp.toFixed(4)}
+<b>Stop Loss:</b> ${sl.toFixed(4)}
+<b>Confidence:</b> ${confidence.toFixed(1)}%
+<b>Market Regime:</b> ${marketRegime}
+
+<b>Time:</b> ${new Date().toLocaleString()}
+
+#${symbol} #${signal} #${strategy}
+    `;
+    
+    return sendTelegramAlert(message);
 }
 
-/* -------------------------
-   🔧 NEW: XRP-SPECIFIC OPTIMIZATIONS
-   ------------------------- */
+function sendTradeUpdateTelegramAlert(symbol, trade, result, exitPrice) {
+    const emoji = result === 'TP HIT' ? '💰' : result === 'SL HIT' ? '🛑' : 'ℹ️';
+    const message = `
+${emoji} <b>TRADE UPDATE</b> ${emoji}
 
-function optimizeForXRP(marketConditions, symbol) {
-    if (!symbol.includes('XRP')) return marketConditions;
+<b>Symbol:</b> ${symbol}
+<b>Signal:</b> ${trade.signal}
+<b>Result:</b> <code>${result}</code>
+<b>Entry:</b> ${trade.entry.toFixed(4)}
+<b>Exit:</b> ${exitPrice.toFixed(4)}
+<b>P&L:</b> ${trade.plPercent ? trade.plPercent.toFixed(2) + '%' : 'Calculating...'}
+
+<b>Duration:</b> ${Math.round((trade.closeTime - trade.openTime) / 1000 / 60)} minutes
+<b>Strategy:</b> ${trade.strategy}
+
+<b>Time:</b> ${new Date().toLocaleString()}
+    `;
     
-    // XRP-specific adjustments
-    const optimizedConditions = {...marketConditions};
-    
-    // XRP has different volatility characteristics
-    optimizedConditions.volatility *= enhancedConfig.xrpOptimizations.volatilityMultiplier;
-    
-    // Adjust trend strength for XRP
-    optimizedConditions.trendStrength *= enhancedConfig.xrpOptimizations.trendSensitivity;
-    
-    return optimizedConditions;
+    return sendTelegramAlert(message);
 }
 
-// 🔧 NEW: Improved confidence calculation for XRP
-function calculateXRPConfidence(baseConfidence, marketConditions, strategy) {
-    let confidence = baseConfidence;
-    
-    // XRP-specific confidence adjustments
-    if (marketConditions.volatility > 0.025) {
-        confidence *= 0.9; // Reduce confidence in high volatility
+async function testTelegramAlert() {
+    const chatId = document.getElementById('telegram-chat-id').value;
+    if (!chatId) {
+        alert('Please enter your Telegram Chat ID first');
+        return;
     }
     
-    // Strategy-specific adjustments for XRP
-    switch(strategy) {
-        case 'crt':
-            // CRT works well in XRP ranging markets
-            if (marketConditions.regime === 'RANGING') {
-                confidence *= 1.1;
-            }
-            break;
-        case 'enhanced':
-            // Enhanced needs stronger trends in XRP
-            if (marketConditions.trendStrength > 40) {
-                confidence *= 1.15;
-            }
-            break;
-    }
+    telegramChatId = chatId;
+    telegramAlertsEnabled = true;
     
-    return Math.min(95, Math.max(40, confidence));
-}
+    const testMessage = `
+🤖 <b>TRADING BOT TEST ALERT</b> 🤖
 
-/* -------------------------
-   🔧 PRECISION: ENHANCED LOSS PREVENTION SYSTEM
-   ------------------------- */
+This is a test message from your Adaptive Trading Signal Bot.
 
-let lossPrevention = {
-    consecutiveLosses: 0,
-    lastWinTime: null,
-    currentDrawdown: 0,
-    maxDrawdown: 0,
-    tradeHistory: []
-};
+<b>Status:</b> ✅ Bot is working correctly
+<b>Telegram:</b> ✅ Alerts are enabled
+<b>Time:</b> ${new Date().toLocaleString()}
 
-function updateLossPrevention(result, pnl) {
-    if (pnl < 0) {
-        lossPrevention.consecutiveLosses++;
-        lossPrevention.currentDrawdown += Math.abs(pnl);
+If you received this message, your Telegram alerts are configured correctly!
+    `;
+    
+    const success = await sendTelegramAlert(testMessage);
+    if (success) {
+        alert('Test alert sent successfully! Check your Telegram.');
     } else {
-        lossPrevention.consecutiveLosses = 0;
-        lossPrevention.currentDrawdown = 0;
-        lossPrevention.lastWinTime = Date.now();
-    }
-    
-    lossPrevention.maxDrawdown = Math.max(lossPrevention.maxDrawdown, lossPrevention.currentDrawdown);
-    lossPrevention.tradeHistory.push({ result, pnl, time: Date.now() });
-    
-    // Keep only last 50 trades
-    if (lossPrevention.tradeHistory.length > 50) {
-        lossPrevention.tradeHistory.shift();
+        alert('Failed to send test alert. Please check your Chat ID.');
     }
 }
 
-function shouldReduceRisk() {
-    const recentTrades = lossPrevention.tradeHistory.slice(-20);
-    const losses = recentTrades.filter(t => t.pnl < 0).length;
-    const lossRate = losses / recentTrades.length;
+function updateTelegramSettings() {
+    telegramChatId = document.getElementById('telegram-chat-id').value;
+    telegramAlertsEnabled = document.getElementById('telegram-alerts').value === 'enabled';
     
-    return lossPrevention.consecutiveLosses >= 3 || 
-           lossRate > 0.6 ||
-           lossPrevention.currentDrawdown > 0.05; // 5% drawdown
-}
-
-function getRiskMultiplier() {
-    if (shouldReduceRisk()) {
-        const reduction = 1 - (lossPrevention.consecutiveLosses * 0.2);
-        return Math.max(0.3, reduction);
+    if (telegramAlertsEnabled && telegramChatId) {
+        document.getElementById('telegram-status').textContent = '✅ Connected';
+        document.getElementById('telegram-status').className = 'telegram-status connected';
+        document.getElementById('telegram-connection').textContent = 'Ready';
+    } else {
+        document.getElementById('telegram-status').textContent = '❌ Disabled';
+        document.getElementById('telegram-status').className = 'telegram-status disconnected';
+        document.getElementById('telegram-connection').textContent = 'Not Configured';
     }
-    return 1.0;
 }
 
 /* -------------------------
-   🔧 PRECISION: ENHANCED ENTRY TIMING
+   UPDATED: RELAXED TREND CONFIRMATION SYSTEM
    ------------------------- */
 
-function getOptimalEntryTiming(data) {
+// 🔧 UPDATED: More flexible trend confirmation function
+function confirmTrendWithMultipleTimeframes(data, currentTimeframe) {
+    const trends = [];
+    const strengths = [];
+    
+    // Analyze current timeframe trend
+    const currentTrend = detectTrendType(data);
+    trends.push(currentTrend.direction);
+    strengths.push(currentTrend.strength);
+    
+    // Check volume confirmation
+    const volumeAnalysis = volumeConfirmation(data);
+    const volumeSupportsTrend = volumeAnalysis.score >= -1; // VERY RELAXED: now allows weak volume
+    
+    // Check RSI for overbought/oversold in context of trend
+    const rsi = advancedRSI(data);
+    const currentRsi = rsi[rsi.length-1];
+    
+    let rsiConfirmation = true;
+    if (currentRsi !== null) {
+        if (currentTrend.direction === 'UP' && currentRsi > enhancedConfig.trendConfirmation.rsiThresholds.uptrend.max) {
+            rsiConfirmation = false;
+        } else if (currentTrend.direction === 'DOWN' && currentRsi < enhancedConfig.trendConfirmation.rsiThresholds.downtrend.min) {
+            rsiConfirmation = false;
+        }
+    }
+    
+    // Check if we're trading with the trend
+    const isUptrend = currentTrend.direction === 'UP' && currentTrend.strength > enhancedConfig.trendConfirmation.minTrendStrength;
+    const isDowntrend = currentTrend.direction === 'DOWN' && currentTrend.strength > enhancedConfig.trendConfirmation.minTrendStrength;
+    
+    // 🔧 UPDATED: More flexible confirmation criteria
+    const confirmed = (volumeSupportsTrend || currentTrend.strength > 25) && rsiConfirmation && (isUptrend || isDowntrend);
+    
+    return {
+        confirmed: confirmed,
+        direction: currentTrend.direction,
+        strength: currentTrend.strength,
+        volumeConfirmed: volumeSupportsTrend,
+        rsiConfirmed: rsiConfirmation,
+        details: {
+            trend: currentTrend,
+            volume: volumeAnalysis,
+            rsi: currentRsi
+        }
+    };
+}
+
+// 🔧 UPDATED: More flexible counter-trend trading protection
+function isCounterTrendTrade(signal, trendAnalysis) {
+    if (signal === 'BUY' && trendAnalysis.direction === 'DOWN' && trendAnalysis.strength > 75) { // INCREASED threshold
+        return { isCounterTrend: true, reason: 'Buying in strong downtrend' };
+    }
+    if (signal === 'SELL' && trendAnalysis.direction === 'UP' && trendAnalysis.strength > 75) { // INCREASED threshold
+        return { isCounterTrend: true, reason: 'Selling in strong uptrend' };
+    }
+    return { isCounterTrend: false, reason: 'Trading with trend' };
+}
+
+// 🔧 UPDATED: Market condition assessment
+function assessMarketCondition(data) {
+    if (data.length < 100) return "NEUTRAL";
+    
+    const closes = data.map(c => c.close);
+    const recentCloses = closes.slice(-50);
+    const olderCloses = closes.slice(-100, -50);
+    
+    const recentAvg = recentCloses.reduce((a, b) => a + b, 0) / recentCloses.length;
+    const olderAvg = olderCloses.reduce((a, b) => a + b, 0) / olderCloses.length;
+    
+    const trendPercent = (recentAvg - olderAvg) / olderAvg * 100;
+    
+    if (trendPercent < -8) return "STRONG_DOWNTREND"; // REDUCED from -15
+    if (trendPercent < -2) return "DOWNTREND"; // REDUCED from -5
+    if (trendPercent > 8) return "STRONG_UPTREND"; // REDUCED from 15
+    if (trendPercent > 2) return "UPTREND"; // REDUCED from 5
+    
+    return "NEUTRAL";
+}
+
+// 🔧 UPDATED: Enhanced risk assessment
+function calculateTradeRisk(signal, marketCondition, confidence) {
+    let riskMultiplier = 1.0;
+    
+    // Reduce risk in strong trends against our signal
+    if ((signal === "BUY" && marketCondition.includes("DOWNTREND")) || 
+        (signal === "SELL" && marketCondition.includes("UPTREND"))) {
+        riskMultiplier = 0.6; // INCREASED from 0.3
+    }
+    
+    // Increase risk when trading with strong trends
+    if ((signal === "BUY" && marketCondition.includes("UPTREND")) || 
+        (signal === "SELL" && marketCondition.includes("DOWNTREND"))) {
+        riskMultiplier = 1.4; // INCREASED from 1.2
+    }
+    
+    // Adjust based on confidence
+    riskMultiplier *= (confidence / 100);
+    
+    return Math.max(0.3, Math.min(2.0, riskMultiplier)); // WIDENED range
+}
+
+/* -------------------------
+   NEW: ERROR HANDLING & RECOVERY SYSTEM
+   ------------------------- */
+function logError(error, context = 'Unknown') {
+    errorCount++;
+    consecutiveErrors++;
+    performanceMetrics.errorsEncountered++;
+    
+    const errorDetails = {
+        timestamp: new Date().toISOString(),
+        context: context,
+        error: error.message || String(error),
+        stack: error.stack || 'No stack trace'
+    };
+    
+    console.error(`❌ [${context}] Error:`, error);
+    
+    // Update UI
+    document.getElementById('error-count').textContent = errorCount;
+    document.getElementById('error-count').style.color = errorCount > 0 ? '#ff4444' : '#cccccc';
+    
+    // Add to error log
+    const errorLog = document.getElementById('error-log');
+    if (errorLog) {
+        const errorEntry = document.createElement('div');
+        errorEntry.style.padding = '5px';
+        errorEntry.style.borderBottom = '1px solid #444';
+        errorEntry.innerHTML = `
+            <strong>${new Date().toLocaleTimeString()}</strong> - ${context}<br>
+            <small>${error.message || String(error)}</small>
+        `;
+        errorLog.prepend(errorEntry);
+        
+        // Keep only last 10 errors
+        if (errorLog.children.length > 10) {
+            errorLog.removeChild(errorLog.lastChild);
+        }
+    }
+    
+    // Show error panel for significant errors
+    if (consecutiveErrors >= 2 || error.message?.includes('WebSocket') || error.message?.includes('API')) {
+        showError(error, context);
+    }
+    
+    // Check circuit breaker
+    checkCircuitBreaker();
+    
+    return errorDetails;
+}
+
+function showError(error, context) {
+    const errorPanel = document.getElementById('error-panel');
+    const errorMessage = document.getElementById('error-message');
+    const errorDetails = document.getElementById('error-details');
+    
+    errorMessage.textContent = `${context}: ${error.message || String(error)}`;
+    errorDetails.textContent = error.stack || 'No stack trace available';
+    
+    errorPanel.classList.add('show');
+    
+    // Auto-hide after 10 seconds for non-critical errors
+    if (!error.message?.includes('WebSocket') && !error.message?.includes('API')) {
+        setTimeout(() => {
+            if (errorPanel.classList.contains('show')) {
+                hideError();
+            }
+        }, 10000);
+    }
+}
+
+function hideError() {
+    document.getElementById('error-panel').classList.remove('show');
+}
+
+function showRecovery(message) {
+    const recoveryPanel = document.getElementById('recovery-status');
+    const recoveryMessage = document.getElementById('recovery-message');
+    
+    recoveryMessage.textContent = message;
+    recoveryPanel.classList.add('show');
+}
+
+function hideRecovery() {
+    document.getElementById('recovery-status').classList.remove('show');
+}
+
+function checkCircuitBreaker() {
+    const circuitBreakerMode = document.getElementById('circuit-breaker').value;
+    
+    if (circuitBreakerMode === 'disabled') return false;
+    
+    if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS || errorCount > 20) {
+        circuitBreakerTripped = true;
+        document.getElementById('circuit-status').textContent = 'TRIPPED';
+        document.getElementById('circuit-status').style.color = '#ff4444';
+        
+        if (isRunning) {
+            stopBot();
+            showError(new Error('Circuit breaker tripped due to excessive errors'), 'Safety System');
+            showRecovery('Circuit breaker activated. Bot stopped for safety.');
+        }
+        
+        return true;
+    }
+    
+    return false;
+}
+
+function resetCircuitBreaker() {
+    consecutiveErrors = 0;
+    circuitBreakerTripped = false;
+    document.getElementById('circuit-status').textContent = 'READY';
+    document.getElementById('circuit-status').style.color = '#00ff00';
+}
+
+async function attemptRecovery() {
+    if (recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
+        showError(new Error('Maximum recovery attempts reached'), 'Recovery System');
+        return false;
+    }
+    
+    recoveryAttempts++;
+    performanceMetrics.recoveryAttempts++;
+    
+    showRecovery(`Attempting recovery (${recoveryAttempts}/${MAX_RECOVERY_ATTEMPTS})...`);
+    
+    try {
+        // Stop everything
+        if (ws) {
+            ws.close();
+            ws = null;
+        }
+        
+        // Clear buffers
+        candleBuffer = [];
+        
+        // Reset error counters
+        resetCircuitBreaker();
+        
+        // Wait a bit
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Try to restart
+        await startBot();
+        
+        hideRecovery();
+        recoveryAttempts = 0;
+        return true;
+        
+    } catch (error) {
+        logError(error, 'Recovery Attempt');
+        showRecovery(`Recovery failed: ${error.message}`);
+        return false;
+    }
+}
+
+function updatePerformanceMetrics() {
+    if (!performanceMetrics.startTime) {
+        performanceMetrics.startTime = Date.now();
+    }
+    
+    const uptime = Date.now() - performanceMetrics.startTime;
+    const hours = Math.floor(uptime / (1000 * 60 * 60));
+    const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+    
+    // Calculate performance score (0-100%)
+    const errorRate = performanceMetrics.errorsEncountered / Math.max(performanceMetrics.signalsGenerated, 1);
+    const performanceScore = Math.max(0, 100 - (errorRate * 100));
+    
+    document.getElementById('performance-score').textContent = `${performanceScore.toFixed(1)}%`;
+    document.getElementById('performance-score').style.color = 
+        performanceScore > 80 ? '#00ff00' : 
+        performanceScore > 60 ? '#ffaa33' : '#ff4444';
+    
+    // Update performance tab
+    const systemHealth = document.getElementById('system-health');
+    const performanceStats = document.getElementById('performance-stats');
+    const circuitBreakerStatus = document.getElementById('circuit-breaker-status');
+    
+    if (systemHealth) {
+        systemHealth.innerHTML = `
+            <div style="color: ${performanceScore > 80 ? '#00ff00' : performanceScore > 60 ? '#ffaa33' : '#ff4444'}">
+                ${performanceScore > 80 ? '✅ EXCELLENT' : performanceScore > 60 ? '⚠️ STABLE' : '❌ DEGRADED'}
+            </div>
+            <div>Uptime: ${hours}h ${minutes}m</div>
+            <div>Recovery Attempts: ${performanceMetrics.recoveryAttempts}</div>
+        `;
+    }
+    
+    if (performanceStats) {
+        performanceStats.innerHTML = `
+            <div>Signals: ${performanceMetrics.signalsGenerated}</div>
+            <div>Errors: ${performanceMetrics.errorsEncountered}</div>
+            <div>WS Reconnects: ${performanceMetrics.wsReconnects}</div>
+            <div>Avg Processing: ${performanceMetrics.avgProcessingTime.toFixed(2)}ms</div>
+        `;
+    }
+    
+    if (circuitBreakerStatus) {
+        circuitBreakerStatus.innerHTML = `
+            <div>Status: <span style="color: ${circuitBreakerTripped ? '#ff4444' : '#00ff00'}">${circuitBreakerTripped ? 'TRIPPED' : 'READY'}</span></div>
+            <div>Consecutive Errors: ${consecutiveErrors}/${MAX_CONSECUTIVE_ERRORS}</div>
+            <div>Total Errors: ${errorCount}</div>
+        `;
+    }
+    
+    performanceMetrics.lastHealthCheck = Date.now();
+}
+
+/* -------------------------
+   UPDATED: MORE AGGRESSIVE ADAPTIVE STRATEGY DETECTION
+   ------------------------- */
+function analyzeMarketConditions(data) {
+    if (data.length < 20) return null;
+    
+    const trendAnalysis = detectTrendType(data);
     const volatility = calculateVolatility(data);
-    const volume = analyzeVolumeProfile(data);
-    const atr = ATR(data);
-    const currentATR = atr[atr.length-1] || 0;
-    
-    let timingScore = 0;
-    
-    // Higher volume = better timing
-    if (volume > 1.5) timingScore += 2;
-    else if (volume > 1.2) timingScore += 1;
-    
-    // Moderate volatility = better timing
-    if (volatility > 0.008 && volatility < 0.02) timingScore += 2;
-    else if (volatility < 0.005) timingScore -= 1; // Too low volatility
-    
-    // ATR check for minimum movement
-    if (currentATR < enhancedConfig.xrpOptimizations.minAtrForEntry) {
-        timingScore -= 2;
-    }
-    
-    return timingScore;
-}
-
-/* -------------------------
-   🔧 UPDATED: OPTIMIZED STOP LOSS WITH TRAILING
-   ------------------------- */
-function optimizedStopLoss(data, signalType, confidence, entryPrice) {
-    const lastClose = data[data.length-1].close;
-    const atr = ATR(data);
-    const currentATR = atr[atr.length-1] || lastClose * 0.008;
-    
-    let atrMultiplier = enhancedConfig.stopLossOptimization.atrMultiplier;
-    
-    // Dynamic multiplier based on confidence and volatility
-    if (confidence > 75) {
-        atrMultiplier = 1.1;
-    } else if (confidence < 65) {
-        atrMultiplier = 1.5;
-    }
-    
+    const volumeProfile = analyzeVolumeProfile(data);
     const regimeAnalysis = enhancedMarketRegimeDetection(data);
-    if (regimeAnalysis.regime === 'RANGING') {
-        atrMultiplier *= 0.7;
-    }
+    const rangeSize = calculateRangeSize(data);
+    
+    return {
+        trend: trendAnalysis.trend,
+        trendStrength: trendAnalysis.strength,
+        volatility: volatility,
+        volume: volumeProfile,
+        regime: regimeAnalysis.regime,
+        rangeSize: rangeSize,
+        isSessionStart: isSessionStart(),
+        hasOrderBlocks: detectOrderBlocks(data).length > 0,
+        hasLiquiditySweeps: detectLiquiditySweeps(data).length > 0,
+        hasCRTSetup: detectCRTSetup(data).valid
+    };
+}
 
-    let sl;
-    if (signalType === 'BUY') {
-        sl = lastClose - (currentATR * atrMultiplier);
-        sl = Math.max(sl, lastClose * (1 - enhancedConfig.stopLossOptimization.maxRiskPercent));
-    } else {
-        sl = lastClose + (currentATR * atrMultiplier);
-        sl = Math.min(sl, lastClose * (1 + enhancedConfig.stopLossOptimization.maxRiskPercent));
+function calculateStrategyScores(marketConditions) {
+    const scores = {
+        enhanced: 0,
+        crt: 0,
+        orb: 0,
+        smc: 0
+    };
+    
+    const weights = enhancedConfig.adaptiveWeights[marketConditions.regime] || 
+                   enhancedConfig.adaptiveWeights.NEUTRAL;
+    
+    // Enhanced Trend Strategy Scoring
+    if (marketConditions.trendStrength > enhancedConfig.strategyConditions.enhanced.minTrendStrength &&
+        marketConditions.volatility < enhancedConfig.strategyConditions.enhanced.maxVolatility) {
+        scores.enhanced = weights.enhanced * 100;
+        // Bonus for strong trends
+        if (marketConditions.trendStrength > 40) scores.enhanced += 20; // REDUCED threshold
     }
     
-    return sl;
+    // CRT Strategy Scoring
+    if (marketConditions.rangeSize > enhancedConfig.strategyConditions.crt.minRangeSize &&
+        marketConditions.volatility < enhancedConfig.strategyConditions.crt.maxVolatility) {
+        scores.crt = weights.crt * 100;
+        // Bonus for valid CRT setup
+        if (marketConditions.hasCRTSetup) scores.crt += 30;
+    }
+    
+    // ORB Strategy Scoring
+    if (marketConditions.isSessionStart && 
+        marketConditions.rangeSize > enhancedConfig.strategyConditions.orb.minRangeSize) {
+        scores.orb = weights.orb * 100;
+        // Bonus for high volume
+        if (marketConditions.volume > enhancedConfig.strategyConditions.orb.volumeMultiplier) {
+            scores.orb += 25;
+        }
+    }
+    
+    // SMC Strategy Scoring
+    if (marketConditions.hasOrderBlocks && marketConditions.hasLiquiditySweeps) {
+        scores.smc = weights.smc * 100;
+        // Bonus for multiple setups
+        if (marketConditions.hasOrderBlocks > 1) scores.smc += 15;
+        if (marketConditions.hasLiquiditySweeps > 2) scores.smc += 15;
+    }
+    
+    // Volume adjustments
+    Object.keys(scores).forEach(strategy => {
+        if (scores[strategy] > 0) {
+            const volumeMultiplier = enhancedConfig.strategyConditions[strategy].volumeMultiplier;
+            if (marketConditions.volume > volumeMultiplier) {
+                scores[strategy] *= 1.2;
+            }
+        }
+    });
+    
+    // Ensure scores are within 0-100 range
+    Object.keys(scores).forEach(strategy => {
+        scores[strategy] = Math.min(100, Math.max(0, scores[strategy]));
+    });
+    
+    return scores;
+}
+
+function selectBestStrategy(scores) {
+    let bestStrategy = "enhanced"; // Default fallback
+    let highestScore = 0;
+    
+    for (const [strategy, score] of Object.entries(scores)) {
+        if (score > highestScore && score > 25) { // REDUCED Minimum threshold from 40
+            highestScore = score;
+            bestStrategy = strategy;
+        }
+    }
+    
+    return {
+        strategy: bestStrategy,
+        score: highestScore,
+        allScores: scores
+    };
+}
+
+function adaptiveStrategySelection(data) {
+    const marketConditions = analyzeMarketConditions(data);
+    if (!marketConditions) return { strategy: "enhanced", score: 0, allScores: {} };
+    
+    const scores = calculateStrategyScores(marketConditions);
+    const bestStrategy = selectBestStrategy(scores);
+    
+    // Store for display
+    strategyScores = scores;
+    
+    return {
+        ...bestStrategy,
+        marketConditions: marketConditions
+    };
 }
 
 /* -------------------------
-   🔧 UPDATED: ENHANCED SIGNAL GENERATION WITH XRP OPTIMIZATIONS
+   STRATEGY-SPECIFIC FUNCTIONS
    ------------------------- */
-
-function generateEnhancedSignal(data, riskLevel, tpMultiplier){
-  if(!data || data.length < 50) return { 
-    signal:"HOLD", 
-    entry: data.length > 0 ? data[data.length-1].close : 0, 
-    tp: 0, sl: 0, confidence:0, rr: 0, 
-    confirmations: [], marketRegime: "NEUTRAL", volumeConfirmation: "N/A", patterns: [],
-    trend: "NEUTRAL", trendStrength: 0, retracement: { isRetracement: false, level: 0, completion: 0 },
-    fvGaps: [], strategy: "Enhanced", adaptiveScore: 0,
-    trendConfirmed: false, counterTrend: false, rejectionReason: "Insufficient data"
-  };
-
-  const symbol = document.getElementById("symbol").value.toUpperCase();
-  const last = data[data.length-1];
-  const lastClose = last.close;
-
-  // 🔧 NEW: XRP-specific market condition optimization
-  let marketConditions = analyzeMarketConditions(data);
-  marketConditions = optimizeForXRP(marketConditions, symbol);
-  
-  // Get selected strategy
-  const selectedStrategy = document.getElementById("trading-strategy").value;
-  
-  // Trend confirmation
-  const trendConfirmation = confirmTrendWithMultipleTimeframes(data, document.getElementById("timeframe").value);
-  
-  // Adaptive strategy selection
-  let finalStrategy = selectedStrategy;
-  let adaptiveResult = null;
-  
-  if (selectedStrategy === "auto") {
-    adaptiveResult = adaptiveStrategySelection(data);
-    finalStrategy = adaptiveResult.strategy;
-    currentStrategy = finalStrategy;
-  } else {
-    currentStrategy = selectedStrategy;
-  }
-
-  // Generate signal based on selected strategy
-  let strategySignal = { signal: "HOLD", confidence: 0, strategy: finalStrategy };
-  
-  switch(finalStrategy) {
-    case "crt":
-      const crtSetup = detectCRTSetup(data);
-      if (crtSetup.valid) {
-        // 🔧 NEW: XRP-specific CRT validation
-        const crtConfidence = calculateXRPConfidence(crtSetup.confidence, marketConditions, 'crt');
-        strategySignal = {
-          signal: crtSetup.direction,
-          confidence: crtConfidence,
-          strategy: "CRT",
-          crtLevels: { CRH: crtSetup.CRH, CRL: crtSetup.CRL }
-        };
-      }
-      break;
-      
-    case "orb":
-      if (isSessionStart() && !currentORBLevels) {
-        currentORBLevels = setupORBLevels(data);
-      }
-      strategySignal = generateORBSignal(data, currentORBLevels);
-      // 🔧 NEW: XRP confidence adjustment
-      if (strategySignal.signal !== "HOLD") {
-        strategySignal.confidence = calculateXRPConfidence(strategySignal.confidence, marketConditions, 'orb');
-      }
-      break;
-      
-    case "smc":
-      const orderBlocks = detectOrderBlocks(data);
-      const liquiditySweeps = detectLiquiditySweeps(data);
-      
-      if (orderBlocks.length > 0 && liquiditySweeps.length > 0) {
-        const recentOB = orderBlocks[orderBlocks.length-1];
-        const recentSweep = liquiditySweeps[liquiditySweeps.length-1];
-        
-        if (recentSweep.timestamp > recentOB.timestamp) {
-          const direction = recentSweep.type === 'UP' ? 'SELL' : 'BUY';
-          const smcConfidence = calculateXRPConfidence(75, marketConditions, 'smc');
-          strategySignal = {
-            signal: direction,
-            confidence: smcConfidence,
-            strategy: "SMC",
-            orderBlock: recentOB,
-            liquiditySweep: recentSweep
-          };
-        }
-      }
-      break;
-      
-    default:
-      const enhancedSignal = generateEnhancedTrendSignal(data, riskLevel, tpMultiplier);
-      strategySignal = {
-        signal: enhancedSignal.signal,
-        confidence: calculateXRPConfidence(enhancedSignal.confidence, marketConditions, 'enhanced'),
-        strategy: "Enhanced"
-      };
-      break;
-  }
-
-  // 🔧 UPDATED: Enhanced validation with loss prevention
-  let finalSignal = "HOLD";
-  let finalConfidence = 0;
-  let rejectionReason = "No valid setup";
-  let trendConfirmed = false;
-  let counterTrend = false;
-
-  // 🔧 NEW: Entry timing check
-  const timingScore = getOptimalEntryTiming(data);
-  const poorTiming = timingScore < 0;
-
-  if (strategySignal.signal !== "HOLD" && strategySignal.confidence > 60 && !poorTiming) {
+function getCurrentSession() {
+    const now = new Date();
+    const utcHours = now.getUTCHours();
     
-    // Check if this is a counter-trend trade
-    const counterTrendCheck = isCounterTrendTrade(strategySignal.signal, trendConfirmation.details.trend);
-    
-    // Flexible trend confirmation for high-quality strategies
-    const isHighQualityStrategy = strategySignal.strategy === "crt" || strategySignal.strategy === "smc";
-    
-    // 🔧 FIX: Lower threshold for high-quality strategies
-    if (!trendConfirmation.confirmed) {
-        if (isHighQualityStrategy && trendConfirmation.strength > 20) {
-            trendConfirmed = true;
-            finalConfidence = strategySignal.confidence * 0.85;
-            rejectionReason = `High-quality ${strategySignal.strategy} setup (trend strength: ${trendConfirmation.strength.toFixed(1)})`;
-        } else {
-            rejectionReason = `Trend not confirmed (${trendConfirmation.direction}, strength: ${trendConfirmation.strength.toFixed(1)})`;
-        }
-    } else if (counterTrendCheck.isCounterTrend) {
-        rejectionReason = counterTrendCheck.reason;
-        counterTrend = true;
-        
-        // Allow counter-trend trades with better conditions
-        const oversoldCondition = trendConfirmation.details.rsi < 35 && strategySignal.signal === "BUY";
-        const overboughtCondition = trendConfirmation.details.rsi > 65 && strategySignal.signal === "SELL";
-        
-        if (strategySignal.confidence > 80 && (oversoldCondition || overboughtCondition)) {
-            trendConfirmed = true;
-            finalConfidence = strategySignal.confidence * 0.75;
-            rejectionReason = `High-confidence counter-trade allowed (RSI: ${trendConfirmation.details.rsi?.toFixed(1) || 'N/A'})`;
-        }
+    if (utcHours >= TRADING_SESSIONS.NEWYORK.start && utcHours < TRADING_SESSIONS.NEWYORK.end) {
+        return 'NEWYORK';
+    } else if (utcHours >= TRADING_SESSIONS.LONDON.start && utcHours < TRADING_SESSIONS.LONDON.end) {
+        return 'LONDON';
+    } else if (utcHours >= TRADING_SESSIONS.ASIAN.start && utcHours < TRADING_SESSIONS.ASIAN.end) {
+        return 'ASIAN';
     } else {
-        // Trading with trend - full confidence
-        trendConfirmed = true;
-        finalConfidence = strategySignal.confidence;
-        rejectionReason = "Trend confirmed";
+        return 'ASIAN'; // Default to Asian if between sessions
+    }
+}
+
+function isSessionStart() {
+    const now = new Date();
+    const utcHours = now.getUTCHours();
+    const utcMinutes = now.getUTCMinutes();
+    const currentSession = getCurrentSession();
+    
+    // Check if we're at the start of a session (first 15 minutes)
+    if (currentSession === 'NEWYORK' && utcHours === TRADING_SESSIONS.NEWYORK.start && utcMinutes < 15) {
+        return true;
+    } else if (currentSession === 'LONDON' && utcHours === TRADING_SESSIONS.LONDON.start && utcMinutes < 15) {
+        return true;
+    } else if (currentSession === 'ASIAN' && utcHours === TRADING_SESSIONS.ASIAN.start && utcMinutes < 15) {
+        return true;
     }
     
-    // 🔧 NEW: Loss prevention check
-    const riskMultiplier = getRiskMultiplier();
-    if (riskMultiplier < 0.5 && finalConfidence < 75) {
-        trendConfirmed = false;
-        rejectionReason = `Risk reduction active (consecutive losses: ${lossPrevention.consecutiveLosses})`;
-    }
+    return false;
+}
+
+function calculateRangeSize(data, lookback = 10) {
+    if (data.length < lookback) return 0;
     
-    if (trendConfirmed) {
-        const marketConditions = analyzeMarketConditions(data);
-        const signalAccepted = shouldAcceptSignal(strategySignal.signal, marketConditions, finalConfidence);
+    const recentData = data.slice(-lookback);
+    const high = Math.max(...recentData.map(c => c.high));
+    const low = Math.min(...recentData.map(c => c.low));
+    const range = high - low;
+    const avgPrice = (high + low) / 2;
+    
+    return range / avgPrice; // Return as percentage
+}
+
+function setupORBLevels(data) {
+    if (data.length < 2) return null;
+    
+    const firstCandle = data[data.length - 1];
+    return {
+        ORH: firstCandle.high,
+        ORL: firstCandle.low,
+        session: getCurrentSession(),
+        timestamp: Date.now()
+    };
+}
+
+function detectCRTSetup(data) {
+    if (data.length < 5) return { valid: false, reason: "Not enough data" };
+    
+    // Look for the 3-candle CRT pattern
+    for (let i = 3; i < data.length; i++) {
+        const candle1 = data[i-2]; // First candle (basis)
+        const candle2 = data[i-1]; // Second candle (liquidity sweep)
+        const candle3 = data[i];   // Third candle (entry)
         
-        if (!signalAccepted) {
-            trendConfirmed = false;
-            finalSignal = "HOLD";
-            rejectionReason = "Signal filtered by market conditions";
-        } else {
-            finalSignal = strategySignal.signal;
+        const CRH = candle1.high;
+        const CRL = candle1.low;
+        
+        // Check for liquidity sweep on candle2
+        const sweepUp = candle2.high > CRH * (1 + 0.001);
+        const sweepDown = candle2.low < CRL * (1 - 0.001);
+        
+        if (sweepUp || sweepDown) {
+            // Look for FVG after sweep
+            const fvGaps = detectFairValueGaps(data.slice(0, i+1));
+            const recentFVG = fvGaps[fvGaps.length - 1];
+            
+            if (recentFVG) {
+                const direction = sweepUp ? 'BEARISH' : 'BULLISH';
+                
+                // Check if current price is touching FVG
+                const currentPrice = data[data.length-1].close;
+                const isTouchingFVG = isPriceInFVG(currentPrice, recentFVG);
+                
+                if (isTouchingFVG && recentFVG.direction === direction) {
+                    return {
+                        valid: true,
+                        direction: sweepUp ? 'SELL' : 'BUY',
+                        CRH: CRH,
+                        CRL: CRL,
+                        entry: currentPrice,
+                        confidence: 75 * 1.2,
+                        fvg: recentFVG
+                    };
+                }
+            }
         }
     }
-  }
-
-  // Calculate entry, TP, SL only if signal is confirmed
-  let entry = lastClose;
-  let tp = lastClose;
-  let sl = lastClose;
-  let rr = 0;
-
-  if (finalSignal !== "HOLD" && finalConfidence > 65) {
-    entry = lastClose;
-    sl = smartStopLoss(data, finalSignal, finalConfidence);
-    const risk = Math.max(Math.abs(entry - sl), entry * 0.002);
     
-    // 🔧 NEW: Dynamic TP based on confidence and risk multiplier
-    const dynamicTPMultiplier = tpMultiplier * (finalConfidence / 100) * getRiskMultiplier();
-    tp = finalSignal === "BUY" ? entry + (risk * dynamicTPMultiplier) : entry - (risk * dynamicTPMultiplier);
-    rr = tpMultiplier;
-  }
+    return { valid: false, reason: "No valid CRT setup found" };
+}
 
-  return { 
-    signal: finalSignal,
-    entry: entry,
-    tp: tp,
-    sl: sl,
-    confidence: finalConfidence,
-    rr: rr,
-    confirmations: trendConfirmed ? [
-        `${strategySignal.strategy} Setup`, 
-        `Trend: ${trendConfirmation.direction}`,
-        `Timing: ${timingScore >= 2 ? 'Good' : timingScore >= 0 ? 'OK' : 'Poor'}`
-    ] : [rejectionReason],
-    marketRegime: trendConfirmation.details.trend.trend,
-    volumeConfirmation: trendConfirmation.details.volume.strength,
-    patterns: [],
-    trend: trendConfirmation.details.trend.trend,
-    trendStrength: trendConfirmation.details.trend.strength,
-    retracement: { isRetracement: false, level: 0, completion: 0 },
-    fvGaps: 0,
-    strategy: strategySignal.strategy,
-    adaptiveScore: adaptiveResult ? adaptiveResult.score : 0,
-    trendConfirmed: trendConfirmed,
-    counterTrend: counterTrend,
-    rejectionReason: rejectionReason,
-    trendDetails: {
-      direction: trendConfirmation.direction,
-      strength: trendConfirmation.strength,
-      volumeConfirmed: trendConfirmation.volumeConfirmed,
-      rsiConfirmed: trendConfirmation.rsiConfirmed
-    },
-    positionSize: calculatePositionSize(finalConfidence, trendConfirmation.details.trend.trend, 1000),
-    // 🔧 NEW: Additional metrics
-    timingScore: timingScore,
-    riskMultiplier: getRiskMultiplier(),
-    lossPrevention: {
-        consecutiveLosses: lossPrevention.consecutiveLosses,
-        currentDrawdown: lossPrevention.currentDrawdown
+function generateORBSignal(data, orbLevels) {
+    if (!orbLevels) return { signal: "HOLD", confidence: 0, strategy: "ORB" };
+    
+    const currentPrice = data[data.length-1].close;
+    const previousPrice = data[data.length-2].close;
+    
+    // Check for breakout
+    if (currentPrice > orbLevels.ORH && previousPrice <= orbLevels.ORH) {
+        return { 
+            signal: "BUY", 
+            confidence: 65, // REDUCED
+            strategy: "ORB Breakout",
+            entry: currentPrice,
+            orbLevels: orbLevels
+        };
+    } else if (currentPrice < orbLevels.ORL && previousPrice >= orbLevels.ORL) {
+        return { 
+            signal: "SELL", 
+            confidence: 65, // REDUCED
+            strategy: "ORB Breakout",
+            entry: currentPrice,
+            orbLevels: orbLevels
+        };
     }
-  };
+    
+    // Check for retest
+    if (Math.abs(currentPrice - orbLevels.ORH) / orbLevels.ORH < 0.001) {
+        return { 
+            signal: "SELL", 
+            confidence: 70, // REDUCED
+            strategy: "ORB Retest",
+            entry: currentPrice,
+            orbLevels: orbLevels
+        };
+    } else if (Math.abs(currentPrice - orbLevels.ORL) / orbLevels.ORL < 0.001) {
+        return { 
+            signal: "BUY", 
+            confidence: 70, // REDUCED
+            strategy: "ORB Retest",
+            entry: currentPrice,
+            orbLevels: orbLevels
+        };
+    }
+    
+    return { signal: "HOLD", confidence: 0, strategy: "ORB" };
+}
+
+function detectOrderBlocks(data) {
+    const orderBlocks = [];
+    if (data.length < 10) return orderBlocks;
+    
+    // Look for consolidation followed by impulse move
+    for (let i = 5; i < data.length - 1; i++) {
+        const consolidationRange = data.slice(i-5, i);
+        const impulseCandle = data[i];
+        
+        // Check if we had consolidation (small range candles)
+        const consolidationHigh = Math.max(...consolidationRange.map(c => c.high));
+        const consolidationLow = Math.min(...consolidationRange.map(c => c.low));
+        const consolidationRangeSize = (consolidationHigh - consolidationLow) / consolidationLow;
+        
+        if (consolidationRangeSize < 0.005) { // Less than 0.5% range
+            // Check for impulse move
+            const impulseSize = Math.abs(impulseCandle.close - impulseCandle.open) / impulseCandle.open;
+            
+            if (impulseSize > 0.01) { // More than 1% impulse
+                const isBullish = impulseCandle.close > impulseCandle.open;
+                const orderBlock = {
+                    type: isBullish ? 'BULLISH' : 'BEARISH',
+                    high: consolidationHigh,
+                    low: consolidationLow,
+                    timestamp: impulseCandle.time,
+                    isValid: true
+                };
+                
+                orderBlocks.push(orderBlock);
+            }
+        }
+    }
+    
+    return orderBlocks.slice(-3); // Return only the 3 most recent order blocks
+}
+
+function detectLiquiditySweeps(data) {
+    const sweeps = [];
+    if (data.length < 10) return sweeps;
+    
+    // Look for wicks that break previous highs/lows and then reverse
+    for (let i = 5; i < data.length; i++) {
+        const currentCandle = data[i];
+        const previousHigh = Math.max(...data.slice(i-5, i).map(c => c.high));
+        const previousLow = Math.min(...data.slice(i-5, i).map(c => c.low));
+        
+        // Check for liquidity sweep up (wick above previous high that gets rejected)
+        if (currentCandle.high > previousHigh && currentCandle.close < currentCandle.open) {
+            sweeps.push({
+                type: 'UP',
+                level: previousHigh,
+                timestamp: currentCandle.time,
+                candle: currentCandle
+            });
+        }
+        
+        // Check for liquidity sweep down (wick below previous low that gets rejected)
+        if (currentCandle.low < previousLow && currentCandle.close > currentCandle.open) {
+            sweeps.push({
+                type: 'DOWN',
+                level: previousLow,
+                timestamp: currentCandle.time,
+                candle: currentCandle
+            });
+        }
+    }
+    
+    return sweeps.slice(-5); // Return only the 5 most recent sweeps
 }
 
 /* -------------------------
@@ -1750,13 +2119,13 @@ function volumeConfirmation(data) {
     let score = 0;
     let strength = 'NEUTRAL';
     
-    if (volumeRatio > 1.8) {
+    if (volumeRatio > enhancedConfig.volumeThresholds.strong) {
         score = 2;
         strength = 'STRONG';
-    } else if (volumeRatio > 1.3) {
+    } else if (volumeRatio > enhancedConfig.volumeThresholds.moderate) {
         score = 1;
         strength = 'MODERATE';
-    } else if (volumeRatio < 0.7) {
+    } else if (volumeRatio < enhancedConfig.volumeThresholds.weak) {
         score = -1;
         strength = 'WEAK';
     }
@@ -1852,9 +2221,32 @@ function enhancedPatternDetection(data) {
     return patterns;
 }
 
-// 🔧 UPDATED: Improved smartStopLoss function with optimized stops
+// Improved smartStopLoss function with tighter stops
 function smartStopLoss(data, signalType, confidence) {
-    return optimizedStopLoss(data, signalType, confidence, data[data.length-1].close);
+    const lastClose = data[data.length-1].close;
+    const atr = ATR(data);
+    const currentATR = atr[atr.length-1] || lastClose * 0.01; // Reduced default
+    
+    // Tighter stops based on confidence and trend
+    let atrMultiplier = 1.3; // Reduced from 2.0
+    
+    if (confidence > 80) {
+        atrMultiplier = 1.0; // Tighter stops for high confidence
+    } else if (confidence < 60) {
+        atrMultiplier = 1.8; // Wider stops for low confidence
+    }
+    
+    // Even tighter stops in ranging markets
+    const regimeAnalysis = enhancedMarketRegimeDetection(data);
+    if (regimeAnalysis.regime === 'RANGING') {
+        atrMultiplier *= 0.8;
+    }
+
+    if (signalType === 'BUY') {
+        return lastClose - (currentATR * atrMultiplier);
+    } else {
+        return lastClose + (currentATR * atrMultiplier);
+    }
 }
 
 /* -------------------------
@@ -1937,22 +2329,18 @@ function generateEnhancedTrendSignal(data, riskLevel, tpMultiplier) {
     let sl = lastClose;
     let rr = 0;
 
-    const requiredRatio = 1.5; // Reduced from 1.8 to get more signals
+    const requiredRatio = 1.3; // REDUCED from 1.8 to get more signals
     
-    if (buySignals > sellSignals * requiredRatio && enhancedConfidence >= 60) { // Reduced from 65
+    if (buySignals > sellSignals * requiredRatio && enhancedConfidence >= 55) { // REDUCED from 65
         signal = "BUY";
         sl = smartStopLoss(data, 'BUY', enhancedConfidence);
         const risk = Math.max(entry - sl, entry * 0.002);
-        // 🔧 UPDATED: Dynamic TP based on confidence
-        const dynamicTPMultiplier = tpMultiplier * (enhancedConfidence / 100);
-        tp = entry + (risk * dynamicTPMultiplier);
-    } else if (sellSignals > buySignals * requiredRatio && enhancedConfidence >= 60) { // Reduced from 65
+        tp = entry + (risk * tpMultiplier);
+    } else if (sellSignals > buySignals * requiredRatio && enhancedConfidence >= 55) { // REDUCED from 65
         signal = "SELL";
         sl = smartStopLoss(data, 'SELL', enhancedConfidence);
         const risk = Math.max(sl - entry, entry * 0.002);
-        // 🔧 UPDATED: Dynamic TP based on confidence
-        const dynamicTPMultiplier = tpMultiplier * (enhancedConfidence / 100);
-        tp = entry - (risk * dynamicTPMultiplier);
+        tp = entry - (risk * tpMultiplier);
     }
 
     rr = signal !== "HOLD" ? tpMultiplier : 0;
@@ -1976,738 +2364,245 @@ function generateEnhancedTrendSignal(data, riskLevel, tpMultiplier) {
 }
 
 /* -------------------------
-   NEW: TREND CONFIRMATION SYSTEM
+   🔧 UPDATED: ENHANCED SIGNAL GENERATION WITH RELAXED TREND PROTECTION
    ------------------------- */
+function generateEnhancedSignal(data, riskLevel, tpMultiplier){
+  if(!data || data.length < 50) return { 
+    signal:"HOLD", 
+    entry: data.length > 0 ? data[data.length-1].close : 0, 
+    tp: 0, sl: 0, confidence:0, rr: 0, 
+    confirmations: [], marketRegime: "NEUTRAL", volumeConfirmation: "N/A", patterns: [],
+    trend: "NEUTRAL", trendStrength: 0, retracement: { isRetracement: false, level: 0, completion: 0 },
+    fvGaps: [], strategy: "Enhanced", adaptiveScore: 0,
+    trendConfirmed: false, counterTrend: false, rejectionReason: "Insufficient data"
+  };
 
-// 🔧 NEW: Enhanced trend confirmation function
-function confirmTrendWithMultipleTimeframes(data, currentTimeframe) {
-    const trends = [];
-    const strengths = [];
-    
-    // Analyze current timeframe trend
-    const currentTrend = detectTrendType(data);
-    trends.push(currentTrend.direction);
-    strengths.push(currentTrend.strength);
-    
-    // Check volume confirmation
-    const volumeAnalysis = volumeConfirmation(data);
-    const volumeSupportsTrend = volumeAnalysis.score > 0;
-    
-    // Check RSI for overbought/oversold in context of trend
-    const rsi = advancedRSI(data);
-    const currentRsi = rsi[rsi.length-1];
-    
-    let rsiConfirmation = true;
-    if (currentRsi !== null) {
-        if (currentTrend.direction === 'UP' && currentRsi > 70) {
-            rsiConfirmation = false;
-        } else if (currentTrend.direction === 'DOWN' && currentRsi < 30) {
-            rsiConfirmation = false;
+  const last = data[data.length-1];
+  const lastClose = last.close;
+
+  // Get selected strategy
+  const selectedStrategy = document.getElementById("trading-strategy").value;
+  
+  // 🔧 UPDATED: More flexible trend confirmation
+  const trendConfirmation = confirmTrendWithMultipleTimeframes(data, document.getElementById("timeframe").value);
+  
+  // Adaptive strategy selection
+  let finalStrategy = selectedStrategy;
+  let adaptiveResult = null;
+  
+  if (selectedStrategy === "auto") {
+    adaptiveResult = adaptiveStrategySelection(data);
+    finalStrategy = adaptiveResult.strategy;
+    currentStrategy = finalStrategy;
+  } else {
+    currentStrategy = selectedStrategy;
+  }
+
+  // Generate signal based on selected strategy
+  let strategySignal = { signal: "HOLD", confidence: 0, strategy: finalStrategy };
+  
+  switch(finalStrategy) {
+    case "crt":
+      const crtSetup = detectCRTSetup(data);
+      if (crtSetup.valid) {
+        strategySignal = {
+          signal: crtSetup.direction,
+          confidence: crtSetup.confidence,
+          strategy: "CRT",
+          crtLevels: { CRH: crtSetup.CRH, CRL: crtSetup.CRL }
+        };
+      }
+      break;
+      
+    case "orb":
+      if (isSessionStart() && !currentORBLevels) {
+        currentORBLevels = setupORBLevels(data);
+      }
+      strategySignal = generateORBSignal(data, currentORBLevels);
+      break;
+      
+    case "smc":
+      const orderBlocks = detectOrderBlocks(data);
+      const liquiditySweeps = detectLiquiditySweeps(data);
+      
+      if (orderBlocks.length > 0 && liquiditySweeps.length > 0) {
+        const recentOB = orderBlocks[orderBlocks.length-1];
+        const recentSweep = liquiditySweeps[liquiditySweeps.length-1];
+        
+        if (recentSweep.timestamp > recentOB.timestamp) {
+          const direction = recentSweep.type === 'UP' ? 'SELL' : 'BUY';
+          strategySignal = {
+            signal: direction,
+            confidence: 70, // REDUCED
+            strategy: "SMC",
+            orderBlock: recentOB,
+            liquiditySweep: recentSweep
+          };
         }
-    }
+      }
+      break;
+      
+    default:
+      const enhancedSignal = generateEnhancedTrendSignal(data, riskLevel, tpMultiplier);
+      strategySignal = {
+        signal: enhancedSignal.signal,
+        confidence: enhancedSignal.confidence,
+        strategy: "Enhanced"
+      };
+      break;
+  }
+
+  // 🔧 UPDATED: More flexible validation before accepting any signal
+  let finalSignal = "HOLD";
+  let finalConfidence = 0;
+  let rejectionReason = "No valid setup";
+  let trendConfirmed = false;
+  let counterTrend = false;
+
+  if (strategySignal.signal !== "HOLD" && strategySignal.confidence > 50) { // REDUCED from 60
     
-    // Check if we're trading with the trend
-    const isUptrend = currentTrend.direction === 'UP' && currentTrend.strength > 25;
-    const isDowntrend = currentTrend.direction === 'DOWN' && currentTrend.strength > 25;
+    // Check if this is a counter-trend trade
+    const counterTrendCheck = isCounterTrendTrade(strategySignal.signal, trendConfirmation.details.trend);
     
-    return {
-        confirmed: volumeSupportsTrend && rsiConfirmation && (isUptrend || isDowntrend),
-        direction: currentTrend.direction,
-        strength: currentTrend.strength,
-        volumeConfirmed: volumeSupportsTrend,
-        rsiConfirmed: rsiConfirmation,
-        details: {
-            trend: currentTrend,
-            volume: volumeAnalysis,
-            rsi: currentRsi
+    // 🔧 UPDATED: More flexible trend confirmation for all strategies
+    const isHighQualityStrategy = strategySignal.strategy === "crt" || strategySignal.strategy === "smc" || strategySignal.strategy === "orb";
+    const hasHighAdaptiveScore = adaptiveResult && adaptiveResult.score > 65; // REDUCED from 80
+    
+    // Apply trend confirmation rules with flexibility for high-quality setups
+    if (!trendConfirmation.confirmed) {
+        // 🔧 UPDATED: Allow high-quality strategies even with weaker trend confirmation
+        if (isHighQualityStrategy && hasHighAdaptiveScore && trendConfirmation.strength > 10) { // REDUCED from 20
+            trendConfirmed = true;
+            finalConfidence = strategySignal.confidence * 0.9; // REDUCED reduction
+            rejectionReason = `High-quality ${strategySignal.strategy} setup (trend strength: ${trendConfirmation.strength.toFixed(1)})`;
+        } else if (strategySignal.confidence > 70 && trendConfirmation.strength > 8) { // NEW: Allow high confidence signals
+            trendConfirmed = true;
+            finalConfidence = strategySignal.confidence * 0.85;
+            rejectionReason = `High-confidence signal allowed (trend strength: ${trendConfirmation.strength.toFixed(1)})`;
+        } else {
+            rejectionReason = `Trend not confirmed (${trendConfirmation.direction}, strength: ${trendConfirmation.strength.toFixed(1)})`;
         }
-    };
-}
-
-// 🔧 NEW: Counter-trend trading protection
-function isCounterTrendTrade(signal, trendAnalysis) {
-    if (signal === 'BUY' && trendAnalysis.direction === 'DOWN' && trendAnalysis.strength > 60) {
-        return { isCounterTrend: true, reason: 'Buying in strong downtrend' };
-    }
-    if (signal === 'SELL' && trendAnalysis.direction === 'UP' && trendAnalysis.strength > 60) {
-        return { isCounterTrend: true, reason: 'Selling in strong uptrend' };
-    }
-    return { isCounterTrend: false, reason: 'Trading with trend' };
-}
-
-// 🔧 NEW: Market condition assessment
-function assessMarketCondition(data) {
-    if (data.length < 100) return "NEUTRAL";
-    
-    const closes = data.map(c => c.close);
-    const recentCloses = closes.slice(-50);
-    const olderCloses = closes.slice(-100, -50);
-    
-    const recentAvg = recentCloses.reduce((a, b) => a + b, 0) / recentCloses.length;
-    const olderAvg = olderCloses.reduce((a, b) => a + b, 0) / olderCloses.length;
-    
-    const trendPercent = (recentAvg - olderAvg) / olderAvg * 100;
-    
-    if (trendPercent < -15) return "STRONG_DOWNTREND";
-    if (trendPercent < -5) return "DOWNTREND";
-    if (trendPercent > 15) return "STRONG_UPTREND";
-    if (trendPercent > 5) return "UPTREND";
-    
-    return "NEUTRAL";
-}
-
-// 🔧 NEW: Enhanced risk assessment
-function calculateTradeRisk(signal, marketCondition, confidence) {
-    let riskMultiplier = 1.0;
-    
-    // Reduce risk in strong trends against our signal
-    if ((signal === "BUY" && marketCondition.includes("DOWNTREND")) || 
-        (signal === "SELL" && marketCondition.includes("UPTREND"))) {
-        riskMultiplier = 0.3; // 70% risk reduction for counter-trend
-    }
-    
-    // Increase risk when trading with strong trends
-    if ((signal === "BUY" && marketCondition.includes("UPTREND")) || 
-        (signal === "SELL" && marketCondition.includes("DOWNTREND"))) {
-        riskMultiplier = 1.2; // 20% risk increase for trend-following
-    }
-    
-    // Adjust based on confidence
-    riskMultiplier *= (confidence / 100);
-    
-    return Math.max(0.1, Math.min(2.0, riskMultiplier));
-}
-
-/* -------------------------
-   NEW: ERROR HANDLING & RECOVERY SYSTEM
-   ------------------------- */
-function logError(error, context = 'Unknown') {
-    errorCount++;
-    consecutiveErrors++;
-    performanceMetrics.errorsEncountered++;
-    
-    const errorDetails = {
-        timestamp: new Date().toISOString(),
-        context: context,
-        error: error.message || String(error),
-        stack: error.stack || 'No stack trace'
-    };
-    
-    console.error(`❌ [${context}] Error:`, error);
-    
-    // Update UI
-    document.getElementById('error-count').textContent = errorCount;
-    document.getElementById('error-count').style.color = errorCount > 0 ? '#ff4444' : '#cccccc';
-    
-    // Add to error log
-    const errorLog = document.getElementById('error-log');
-    if (errorLog) {
-        const errorEntry = document.createElement('div');
-        errorEntry.style.padding = '5px';
-        errorEntry.style.borderBottom = '1px solid #444';
-        errorEntry.innerHTML = `
-            <strong>${new Date().toLocaleTimeString()}</strong> - ${context}<br>
-            <small>${error.message || String(error)}</small>
-        `;
-        errorLog.prepend(errorEntry);
+    } else if (counterTrendCheck.isCounterTrend) {
+        rejectionReason = counterTrendCheck.reason;
+        counterTrend = true;
         
-        // Keep only last 10 errors
-        if (errorLog.children.length > 10) {
-            errorLog.removeChild(errorLog.lastChild);
+        // 🔧 UPDATED: More flexible counter-trend trading conditions
+        const oversoldCondition = trendConfirmation.details.rsi < 45 && strategySignal.signal === "BUY"; // INCREASED from 35
+        const overboughtCondition = trendConfirmation.details.rsi > 55 && strategySignal.signal === "SELL"; // REDUCED from 65
+        
+        if (strategySignal.confidence > 70 && (oversoldCondition || overboughtCondition)) {
+            // Allow counter-trend trades with high confidence and RSI extremes
+            trendConfirmed = true;
+            finalConfidence = strategySignal.confidence * 0.8; // REDUCED penalty
+            rejectionReason = `High-confidence counter-trade allowed (RSI: ${trendConfirmation.details.rsi?.toFixed(1) || 'N/A'})`;
+        } else if (strategySignal.strategy === "crt" && strategySignal.confidence > 65) {
+            // Allow CRT counter-trend trades with good confidence
+            trendConfirmed = true;
+            finalConfidence = strategySignal.confidence * 0.75;
+            rejectionReason = `CRT counter-trade setup (confidence: ${strategySignal.confidence})`;
         }
-    }
-    
-    // Show error panel for significant errors
-    if (consecutiveErrors >= 2 || error.message?.includes('WebSocket') || error.message?.includes('API')) {
-        showError(error, context);
-    }
-    
-    // Check circuit breaker
-    checkCircuitBreaker();
-    
-    return errorDetails;
-}
-
-function showError(error, context) {
-    const errorPanel = document.getElementById('error-panel');
-    const errorMessage = document.getElementById('error-message');
-    const errorDetails = document.getElementById('error-details');
-    
-    errorMessage.textContent = `${context}: ${error.message || String(error)}`;
-    errorDetails.textContent = error.stack || 'No stack trace available';
-    
-    errorPanel.classList.add('show');
-    
-    // Auto-hide after 10 seconds for non-critical errors
-    if (!error.message?.includes('WebSocket') && !error.message?.includes('API')) {
-        setTimeout(() => {
-            if (errorPanel.classList.contains('show')) {
-                hideError();
-            }
-        }, 10000);
-    }
-}
-
-function hideError() {
-    document.getElementById('error-panel').classList.remove('show');
-}
-
-function showRecovery(message) {
-    const recoveryPanel = document.getElementById('recovery-status');
-    const recoveryMessage = document.getElementById('recovery-message');
-    
-    recoveryMessage.textContent = message;
-    recoveryPanel.classList.add('show');
-}
-
-function hideRecovery() {
-    document.getElementById('recovery-status').classList.remove('show');
-}
-
-function checkCircuitBreaker() {
-    const circuitBreakerMode = document.getElementById('circuit-breaker').value;
-    
-    if (circuitBreakerMode === 'disabled') return false;
-    
-    if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS || errorCount > 20) {
-        circuitBreakerTripped = true;
-        document.getElementById('circuit-status').textContent = 'TRIPPED';
-        document.getElementById('circuit-status').style.color = '#ff4444';
-        
-        if (isRunning) {
-            stopBot();
-            showError(new Error('Circuit breaker tripped due to excessive errors'), 'Safety System');
-            showRecovery('Circuit breaker activated. Bot stopped for safety.');
-        }
-        
-        return true;
-    }
-    
-    return false;
-}
-
-function resetCircuitBreaker() {
-    consecutiveErrors = 0;
-    circuitBreakerTripped = false;
-    document.getElementById('circuit-status').textContent = 'READY';
-    document.getElementById('circuit-status').style.color = '#00ff00';
-}
-
-async function attemptRecovery() {
-    if (recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
-        showError(new Error('Maximum recovery attempts reached'), 'Recovery System');
-        return false;
-    }
-    
-    recoveryAttempts++;
-    performanceMetrics.recoveryAttempts++;
-    
-    showRecovery(`Attempting recovery (${recoveryAttempts}/${MAX_RECOVERY_ATTEMPTS})...`);
-    
-    try {
-        // Stop everything
-        if (ws) {
-            ws.close();
-            ws = null;
-        }
-        
-        // Clear buffers
-        candleBuffer = [];
-        
-        // Reset error counters
-        resetCircuitBreaker();
-        
-        // Wait a bit
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Try to restart
-        await startBot();
-        
-        hideRecovery();
-        recoveryAttempts = 0;
-        return true;
-        
-    } catch (error) {
-        logError(error, 'Recovery Attempt');
-        showRecovery(`Recovery failed: ${error.message}`);
-        return false;
-    }
-}
-
-function updatePerformanceMetrics() {
-    if (!performanceMetrics.startTime) {
-        performanceMetrics.startTime = Date.now();
-    }
-    
-    const uptime = Date.now() - performanceMetrics.startTime;
-    const hours = Math.floor(uptime / (1000 * 60 * 60));
-    const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
-    
-    // Calculate performance score (0-100%)
-    const errorRate = performanceMetrics.errorsEncountered / Math.max(performanceMetrics.signalsGenerated, 1);
-    const performanceScore = Math.max(0, 100 - (errorRate * 100));
-    
-    document.getElementById('performance-score').textContent = `${performanceScore.toFixed(1)}%`;
-    document.getElementById('performance-score').style.color = 
-        performanceScore > 80 ? '#00ff00' : 
-        performanceScore > 60 ? '#ffaa33' : '#ff4444';
-    
-    // Update performance tab
-    const systemHealth = document.getElementById('system-health');
-    const performanceStats = document.getElementById('performance-stats');
-    const circuitBreakerStatus = document.getElementById('circuit-breaker-status');
-    
-    if (systemHealth) {
-        systemHealth.innerHTML = `
-            <div style="color: ${performanceScore > 80 ? '#00ff00' : performanceScore > 60 ? '#ffaa33' : '#ff4444'}">
-                ${performanceScore > 80 ? '✅ EXCELLENT' : performanceScore > 60 ? '⚠️ STABLE' : '❌ DEGRADED'}
-            </div>
-            <div>Uptime: ${hours}h ${minutes}m</div>
-            <div>Recovery Attempts: ${performanceMetrics.recoveryAttempts}</div>
-        `;
-    }
-    
-    if (performanceStats) {
-        performanceStats.innerHTML = `
-            <div>Signals: ${performanceMetrics.signalsGenerated}</div>
-            <div>Errors: ${performanceMetrics.errorsEncountered}</div>
-            <div>WS Reconnects: ${performanceMetrics.wsReconnects}</div>
-            <div>Avg Processing: ${performanceMetrics.avgProcessingTime.toFixed(2)}ms</div>
-        `;
-    }
-    
-    if (circuitBreakerStatus) {
-        circuitBreakerStatus.innerHTML = `
-            <div>Status: <span style="color: ${circuitBreakerTripped ? '#ff4444' : '#00ff00'}">${circuitBreakerTripped ? 'TRIPPED' : 'READY'}</span></div>
-            <div>Consecutive Errors: ${consecutiveErrors}/${MAX_CONSECUTIVE_ERRORS}</div>
-            <div>Total Errors: ${errorCount}</div>
-        `;
-    }
-    
-    performanceMetrics.lastHealthCheck = Date.now();
-}
-
-/* -------------------------
-   NEW: ADAPTIVE STRATEGY DETECTION
-   ------------------------- */
-function analyzeMarketConditions(data) {
-    if (data.length < 20) return null;
-    
-    const trendAnalysis = detectTrendType(data);
-    const volatility = calculateVolatility(data);
-    const volumeProfile = analyzeVolumeProfile(data);
-    const regimeAnalysis = enhancedMarketRegimeDetection(data);
-    const rangeSize = calculateRangeSize(data);
-    
-    return {
-        trend: trendAnalysis.trend,
-        trendStrength: trendAnalysis.strength,
-        volatility: volatility,
-        volume: volumeProfile,
-        regime: regimeAnalysis.regime,
-        rangeSize: rangeSize,
-        isSessionStart: isSessionStart(),
-        hasOrderBlocks: detectOrderBlocks(data).length > 0,
-        hasLiquiditySweeps: detectLiquiditySweeps(data).length > 0,
-        hasCRTSetup: detectCRTSetup(data).valid
-    };
-}
-
-function calculateStrategyScores(marketConditions) {
-    const scores = {
-        enhanced: 0,
-        crt: 0,
-        orb: 0,
-        smc: 0
-    };
-    
-    const weights = enhancedConfig.adaptiveWeights[marketConditions.regime] || 
-                   enhancedConfig.adaptiveWeights.NEUTRAL;
-    
-    // Enhanced Trend Strategy Scoring
-    if (marketConditions.trendStrength > enhancedConfig.strategyConditions.enhanced.minTrendStrength &&
-        marketConditions.volatility < enhancedConfig.strategyConditions.enhanced.maxVolatility) {
-        scores.enhanced = weights.enhanced * 100;
-        // 🔧 UPDATED: Bonus for strong trends (from backtest optimization)
-        if (marketConditions.trendStrength > 40) scores.enhanced += 25;
-    }
-    
-    // CRT Strategy Scoring
-    if (marketConditions.rangeSize > enhancedConfig.strategyConditions.crt.minRangeSize &&
-        marketConditions.volatility < enhancedConfig.strategyConditions.crt.maxVolatility) {
-        scores.crt = weights.crt * 100;
-        // Bonus for valid CRT setup
-        if (marketConditions.hasCRTSetup) scores.crt += 30;
-    }
-    
-    // ORB Strategy Scoring
-    if (marketConditions.isSessionStart && 
-        marketConditions.rangeSize > enhancedConfig.strategyConditions.orb.minRangeSize) {
-        scores.orb = weights.orb * 100;
-        // Bonus for high volume
-        if (marketConditions.volume > enhancedConfig.strategyConditions.orb.volumeMultiplier) {
-            scores.orb += 25;
-        }
-    }
-    
-    // SMC Strategy Scoring
-    if (marketConditions.hasOrderBlocks && marketConditions.hasLiquiditySweeps) {
-        scores.smc = weights.smc * 100;
-        // Bonus for multiple setups
-        if (marketConditions.hasOrderBlocks > 1) scores.smc += 15;
-        if (marketConditions.hasLiquiditySweeps > 2) scores.smc += 15;
-    }
-    
-    // Volume adjustments
-    Object.keys(scores).forEach(strategy => {
-        if (scores[strategy] > 0) {
-            const volumeMultiplier = enhancedConfig.strategyConditions[strategy].volumeMultiplier;
-            if (marketConditions.volume > volumeMultiplier) {
-                scores[strategy] *= 1.2;
-            }
-        }
-    });
-    
-    // Ensure scores are within 0-100 range
-    Object.keys(scores).forEach(strategy => {
-        scores[strategy] = Math.min(100, Math.max(0, scores[strategy]));
-    });
-    
-    return scores;
-}
-
-function selectBestStrategy(scores) {
-    let bestStrategy = "enhanced"; // Default fallback
-    let highestScore = 0;
-    
-    for (const [strategy, score] of Object.entries(scores)) {
-        if (score > highestScore && score > 40) { // Minimum threshold
-            highestScore = score;
-            bestStrategy = strategy;
-        }
-    }
-    
-    return {
-        strategy: bestStrategy,
-        score: highestScore,
-        allScores: scores
-    };
-}
-
-function adaptiveStrategySelection(data) {
-    const marketConditions = analyzeMarketConditions(data);
-    if (!marketConditions) return { strategy: "enhanced", score: 0, allScores: {} };
-    
-    const scores = calculateStrategyScores(marketConditions);
-    const bestStrategy = selectBestStrategy(scores);
-    
-    // Store for display
-    strategyScores = scores;
-    
-    return {
-        ...bestStrategy,
-        marketConditions: marketConditions
-    };
-}
-
-/* -------------------------
-   STRATEGY-SPECIFIC FUNCTIONS
-   ------------------------- */
-function getCurrentSession() {
-    const now = new Date();
-    const utcHours = now.getUTCHours();
-    
-    if (utcHours >= TRADING_SESSIONS.NEWYORK.start && utcHours < TRADING_SESSIONS.NEWYORK.end) {
-        return 'NEWYORK';
-    } else if (utcHours >= TRADING_SESSIONS.LONDON.start && utcHours < TRADING_SESSIONS.LONDON.end) {
-        return 'LONDON';
-    } else if (utcHours >= TRADING_SESSIONS.ASIAN.start && utcHours < TRADING_SESSIONS.ASIAN.end) {
-        return 'ASIAN';
     } else {
-        return 'ASIAN'; // Default to Asian if between sessions
-    }
-}
-
-function isSessionStart() {
-    const now = new Date();
-    const utcHours = now.getUTCHours();
-    const utcMinutes = now.getUTCMinutes();
-    const currentSession = getCurrentSession();
-    
-    // Check if we're at the start of a session (first 15 minutes)
-    if (currentSession === 'NEWYORK' && utcHours === TRADING_SESSIONS.NEWYORK.start && utcMinutes < 15) {
-        return true;
-    } else if (currentSession === 'LONDON' && utcHours === TRADING_SESSIONS.LONDON.start && utcMinutes < 15) {
-        return true;
-    } else if (currentSession === 'ASIAN' && utcHours === TRADING_SESSIONS.ASIAN.start && utcMinutes < 15) {
-        return true;
+        // Trading with trend - full confidence
+        trendConfirmed = true;
+        finalConfidence = strategySignal.confidence;
+        rejectionReason = "Trend confirmed";
     }
     
-    return false;
-}
-
-function calculateRangeSize(data, lookback = 10) {
-    if (data.length < lookback) return 0;
-    
-    const recentData = data.slice(-lookback);
-    const high = Math.max(...recentData.map(c => c.high));
-    const low = Math.min(...recentData.map(c => c.low));
-    const range = high - low;
-    const avgPrice = (high + low) / 2;
-    
-    return range / avgPrice; // Return as percentage
-}
-
-function setupORBLevels(data) {
-    if (data.length < 2) return null;
-    
-    const firstCandle = data[data.length - 1];
-    return {
-        ORH: firstCandle.high,
-        ORL: firstCandle.low,
-        session: getCurrentSession(),
-        timestamp: Date.now()
-    };
-}
-
-function detectCRTSetup(data) {
-    if (data.length < 5) return { valid: false, reason: "Not enough data" };
-    
-    // Look for the 3-candle CRT pattern
-    for (let i = 3; i < data.length; i++) {
-        const candle1 = data[i-2]; // First candle (basis)
-        const candle2 = data[i-1]; // Second candle (liquidity sweep)
-        const candle3 = data[i];   // Third candle (entry)
-        
-        const CRH = candle1.high;
-        const CRL = candle1.low;
-        
-        // Check for liquidity sweep on candle2
-        const sweepUp = candle2.high > CRH * (1 + 0.001);
-        const sweepDown = candle2.low < CRL * (1 - 0.001);
-        
-        if (sweepUp || sweepDown) {
-            // Look for FVG after sweep
-            const fvGaps = detectFairValueGaps(data.slice(0, i+1));
-            const recentFVG = fvGaps[fvGaps.length - 1];
-            
-            if (recentFVG) {
-                const direction = sweepUp ? 'BEARISH' : 'BULLISH';
-                
-                // Check if current price is touching FVG
-                const currentPrice = data[data.length-1].close;
-                const isTouchingFVG = isPriceInFVG(currentPrice, recentFVG);
-                
-                if (isTouchingFVG && recentFVG.direction === direction) {
-                    return {
-                        valid: true,
-                        direction: sweepUp ? 'SELL' : 'BUY',
-                        CRH: CRH,
-                        CRL: CRL,
-                        entry: currentPrice,
-                        confidence: 75 * 1.2,
-                        fvg: recentFVG
-                    };
-                }
-            }
-        }
+    if (trendConfirmed) {
+        finalSignal = strategySignal.signal;
     }
-    
-    return { valid: false, reason: "No valid CRT setup found" };
-}
+  }
 
-function generateORBSignal(data, orbLevels) {
-    if (!orbLevels) return { signal: "HOLD", confidence: 0, strategy: "ORB" };
-    
-    const currentPrice = data[data.length-1].close;
-    const previousPrice = data[data.length-2].close;
-    
-    // Check for breakout
-    if (currentPrice > orbLevels.ORH && previousPrice <= orbLevels.ORH) {
-        return { 
-            signal: "BUY", 
-            confidence: 70,
-            strategy: "ORB Breakout",
-            entry: currentPrice,
-            orbLevels: orbLevels
-        };
-    } else if (currentPrice < orbLevels.ORL && previousPrice >= orbLevels.ORL) {
-        return { 
-            signal: "SELL", 
-            confidence: 70,
-            strategy: "ORB Breakout",
-            entry: currentPrice,
-            orbLevels: orbLevels
-        };
-    }
-    
-    // Check for retest
-    if (Math.abs(currentPrice - orbLevels.ORH) / orbLevels.ORH < 0.001) {
-        return { 
-            signal: "SELL", 
-            confidence: 75,
-            strategy: "ORB Retest",
-            entry: currentPrice,
-            orbLevels: orbLevels
-        };
-    } else if (Math.abs(currentPrice - orbLevels.ORL) / orbLevels.ORL < 0.001) {
-        return { 
-            signal: "BUY", 
-            confidence: 75,
-            strategy: "ORB Retest",
-            entry: currentPrice,
-            orbLevels: orbLevels
-        };
-    }
-    
-    return { signal: "HOLD", confidence: 0, strategy: "ORB" };
-}
+  // Calculate entry, TP, SL only if signal is confirmed
+  let entry = lastClose;
+  let tp = lastClose;
+  let sl = lastClose;
+  let rr = 0;
 
-function detectOrderBlocks(data) {
-    const orderBlocks = [];
-    if (data.length < 10) return orderBlocks;
-    
-    // Look for consolidation followed by impulse move
-    for (let i = 5; i < data.length - 1; i++) {
-        const consolidationRange = data.slice(i-5, i);
-        const impulseCandle = data[i];
-        
-        // Check if we had consolidation (small range candles)
-        const consolidationHigh = Math.max(...consolidationRange.map(c => c.high));
-        const consolidationLow = Math.min(...consolidationRange.map(c => c.low));
-        const consolidationRangeSize = (consolidationHigh - consolidationLow) / consolidationLow;
-        
-        if (consolidationRangeSize < 0.005) { // Less than 0.5% range
-            // Check for impulse move
-            const impulseSize = Math.abs(impulseCandle.close - impulseCandle.open) / impulseCandle.open;
-            
-            if (impulseSize > 0.01) { // More than 1% impulse
-                const isBullish = impulseCandle.close > impulseCandle.open;
-                const orderBlock = {
-                    type: isBullish ? 'BULLISH' : 'BEARISH',
-                    high: consolidationHigh,
-                    low: consolidationLow,
-                    timestamp: impulseCandle.time,
-                    isValid: true
-                };
-                
-                orderBlocks.push(orderBlock);
-            }
-        }
-    }
-    
-    return orderBlocks.slice(-3); // Return only the 3 most recent order blocks
-}
+  if (finalSignal !== "HOLD" && finalConfidence > 55) { // REDUCED from 65
+    entry = lastClose;
+    sl = smartStopLoss(data, finalSignal, finalConfidence);
+    const risk = Math.max(Math.abs(entry - sl), entry * 0.002);
+    tp = finalSignal === "BUY" ? entry + (risk * tpMultiplier) : entry - (risk * tpMultiplier);
+    rr = tpMultiplier;
+  }
 
-function detectLiquiditySweeps(data) {
-    const sweeps = [];
-    if (data.length < 10) return sweeps;
-    
-    // Look for wicks that break previous highs/lows and then reverse
-    for (let i = 5; i < data.length; i++) {
-        const currentCandle = data[i];
-        const previousHigh = Math.max(...data.slice(i-5, i).map(c => c.high));
-        const previousLow = Math.min(...data.slice(i-5, i).map(c => c.low));
-        
-        // Check for liquidity sweep up (wick above previous high that gets rejected)
-        if (currentCandle.high > previousHigh && currentCandle.close < currentCandle.open) {
-            sweeps.push({
-                type: 'UP',
-                level: previousHigh,
-                timestamp: currentCandle.time,
-                candle: currentCandle
-            });
-        }
-        
-        // Check for liquidity sweep down (wick below previous low that gets rejected)
-        if (currentCandle.low < previousLow && currentCandle.close > currentCandle.open) {
-            sweeps.push({
-                type: 'DOWN',
-                level: previousLow,
-                timestamp: currentCandle.time,
-                candle: currentCandle
-            });
-        }
+  return { 
+    signal: finalSignal,
+    entry: entry,
+    tp: tp,
+    sl: sl,
+    confidence: finalConfidence,
+    rr: rr,
+    confirmations: trendConfirmed ? [`${strategySignal.strategy} Setup`, `Trend: ${trendConfirmation.direction}`] : [rejectionReason],
+    marketRegime: trendConfirmation.details.trend.trend,
+    volumeConfirmation: trendConfirmation.details.volume.strength,
+    patterns: [],
+    trend: trendConfirmation.details.trend.trend,
+    trendStrength: trendConfirmation.details.trend.strength,
+    retracement: { isRetracement: false, level: 0, completion: 0 },
+    fvGaps: 0,
+    strategy: strategySignal.strategy,
+    adaptiveScore: adaptiveResult ? adaptiveResult.score : 0,
+    // 🔧 UPDATED: Enhanced tracking
+    trendConfirmed: trendConfirmed,
+    counterTrend: counterTrend,
+    rejectionReason: rejectionReason,
+    trendDetails: {
+      direction: trendConfirmation.direction,
+      strength: trendConfirmation.strength,
+      volumeConfirmed: trendConfirmation.volumeConfirmed,
+      rsiConfirmed: trendConfirmation.rsiConfirmed
     }
-    
-    return sweeps.slice(-5); // Return only the 5 most recent sweeps
+  };
 }
 
 /* -------------------------
-   🔧 NEW: IMPROVED SIGNAL FILTERING
+   NEW: ACTIVE TRADE MANAGEMENT FUNCTIONS
    ------------------------- */
-function shouldAcceptSignal(signal, marketConditions, confidence) {
-    // Reject low confidence signals in volatile markets
-    if (marketConditions.regime === 'VOLATILE' && confidence < 75) {
-        return false;
+function checkActiveTrade() {
+    if (!activeTrade || !activeTrade.open) {
+        console.log("🔄 No active trade to check");
+        return;
     }
     
-    // Require higher confidence for counter-trend trades
-    const trend = detectTrendType(candleBuffer);
-    if ((signal === 'BUY' && trend.direction === 'DOWN') || 
-        (signal === 'SELL' && trend.direction === 'UP')) {
-        return confidence >= 80;
+    const currentPrice = candleBuffer.length > 0 ? candleBuffer[candleBuffer.length-1].close : activeTrade.entry;
+    let result = "OPEN";
+    let plPercent = 0;
+    
+    if (activeTrade.signal === "BUY") {
+        plPercent = ((currentPrice - activeTrade.entry) / activeTrade.entry) * 100;
+        
+        if (currentPrice >= activeTrade.tp) {
+            result = "TP HIT";
+            console.log(`💰 Take Profit hit at ${currentPrice}`);
+            closeActiveTrade("TP HIT", currentPrice);
+        } else if (currentPrice <= activeTrade.sl) {
+            result = "SL HIT";
+            console.log(`🛑 Stop Loss hit at ${currentPrice}`);
+            closeActiveTrade("SL HIT", currentPrice);
+        }
+    } else if (activeTrade.signal === "SELL") {
+        plPercent = ((activeTrade.entry - currentPrice) / activeTrade.entry) * 100;
+        
+        if (currentPrice <= activeTrade.tp) {
+            result = "TP HIT";
+            console.log(`💰 Take Profit hit at ${currentPrice}`);
+            closeActiveTrade("TP HIT", currentPrice);
+        } else if (currentPrice >= activeTrade.sl) {
+            result = "SL HIT";
+            console.log(`🛑 Stop Loss hit at ${currentPrice}`);
+            closeActiveTrade("SL HIT", currentPrice);
+        }
     }
     
-    // Volume confirmation requirement
-    const volume = volumeConfirmation(candleBuffer);
-    if (volume.strength === 'WEAK' && confidence < 70) {
-        return false;
+    // Update active trade UI only if trade is still open
+    if (activeTrade && activeTrade.open) {
+        updateActiveTradeUI(currentPrice, plPercent, result);
     }
-    
-    // 🔧 NEW: Session-based filtering
-    if (!isOptimalTradingSession()) {
-        return confidence >= 75; // Higher threshold for non-optimal sessions
-    }
-    
-    return true;
 }
-
-/* -------------------------
-   🔧 NEW: DYNAMIC POSITION SIZING
-   ------------------------- */
-function calculatePositionSize(confidence, marketRegime, accountBalance = 1000) {
-    const baseSize = 0.1; // 10% of account
-    
-    // Adjust based on confidence
-    let sizeMultiplier = confidence / 100;
-    
-    // Adjust based on market regime
-    switch(marketRegime) {
-        case 'TRENDING':
-            sizeMultiplier *= 1.2;
-            break;
-        case 'VOLATILE':
-            sizeMultiplier *= 0.6;
-            break;
-        case 'RANGING':
-            sizeMultiplier *= 0.8;
-            break;
-    }
-    
-    const positionSize = accountBalance * baseSize * sizeMultiplier;
-    return Math.max(positionSize, accountBalance * 0.05); // Minimum 5%
-}
-
-/* -------------------------
-   🔧 NEW: OPTIMAL TRADING SESSION CHECK
-   ------------------------- */
-function isOptimalTradingSession() {
-    const session = getCurrentSession();
-    // Focus on London & New York overlap (13-16 UTC)
-    const now = new Date();
-    const utcHours = now.getUTCHours();
-    return session === 'LONDON' || session === 'NEWYORK' || (utcHours >= 13 && utcHours < 16);
-}
-
-/* -------------------------
-   🔧 UPDATED: ENHANCED TRADE MANAGEMENT
-   ------------------------- */
 
 function openNewTrade(signal, entry, tp, sl, confidence, marketRegime, trend, volumeConfirmation, patterns, strategy, adaptiveScore) {
-    const riskMultiplier = getRiskMultiplier();
-    const positionSize = calculatePositionSize(confidence, marketRegime, 1000) * riskMultiplier;
-    
     activeTrade = {
         signal: signal,
         entry: entry,
@@ -2722,9 +2617,7 @@ function openNewTrade(signal, entry, tp, sl, confidence, marketRegime, trend, vo
         adaptiveScore: adaptiveScore,
         openTime: new Date(),
         open: true,
-        result: "OPEN",
-        positionSize: positionSize,
-        riskMultiplier: riskMultiplier
+        result: "OPEN"
     };
     
     // Update UI
@@ -2733,7 +2626,21 @@ function openNewTrade(signal, entry, tp, sl, confidence, marketRegime, trend, vo
     
     updateActiveTradeUI(entry, 0, "OPEN");
     
-    console.log(`🔄 New ${signal} trade opened at ${entry} using ${strategy} strategy (Risk: ${(riskMultiplier * 100).toFixed(0)}%)`);
+    console.log(`🔄 New ${signal} trade opened at ${entry} using ${strategy} strategy`);
+    
+    // Send Telegram alert for new trade
+    if (telegramAlertsEnabled && telegramChatId) {
+        sendSignalTelegramAlert(
+            document.getElementById("symbol").value.toUpperCase(),
+            signal,
+            entry,
+            tp,
+            sl,
+            confidence,
+            strategy,
+            marketRegime
+        );
+    }
 }
 
 function closeActiveTrade(result, exitPrice) {
@@ -2753,9 +2660,6 @@ function closeActiveTrade(result, exitPrice) {
     }
     activeTrade.plPercent = plPercent;
     
-    // 🔧 NEW: Update loss prevention system
-    updateLossPrevention(result, plPercent);
-    
     // Add to history
     tradeHistory.push({...activeTrade});
     
@@ -2768,44 +2672,21 @@ function closeActiveTrade(result, exitPrice) {
     
     console.log(`🔒 Trade closed: ${result} at ${exitPrice} (P/L: ${plPercent.toFixed(2)}%)`);
     
+    // Send Telegram alert for trade closure
+    if (telegramAlertsEnabled && telegramChatId) {
+        sendTradeUpdateTelegramAlert(
+            document.getElementById("symbol").value.toUpperCase(),
+            activeTrade,
+            result,
+            exitPrice
+        );
+    }
+    
     // Reset active trade
     activeTrade = null;
     
     // Play sound for trade closure
     document.getElementById("alert-sound").play();
-}
-
-function checkActiveTrade() {
-    if (!activeTrade || !activeTrade.open) return;
-    
-    const currentPrice = candleBuffer.length > 0 ? candleBuffer[candleBuffer.length-1].close : activeTrade.entry;
-    let result = "OPEN";
-    let plPercent = 0;
-    
-    if (activeTrade.signal === "BUY") {
-        plPercent = ((currentPrice - activeTrade.entry) / activeTrade.entry) * 100;
-        
-        if (currentPrice >= activeTrade.tp) {
-            result = "TP HIT";
-            closeActiveTrade("TP HIT", currentPrice);
-        } else if (currentPrice <= activeTrade.sl) {
-            result = "SL HIT";
-            closeActiveTrade("SL HIT", currentPrice);
-        }
-    } else if (activeTrade.signal === "SELL") {
-        plPercent = ((activeTrade.entry - currentPrice) / activeTrade.entry) * 100;
-        
-        if (currentPrice <= activeTrade.tp) {
-            result = "TP HIT";
-            closeActiveTrade("TP HIT", currentPrice);
-        } else if (currentPrice >= activeTrade.sl) {
-            result = "SL HIT";
-            closeActiveTrade("SL HIT", currentPrice);
-        }
-    }
-    
-    // Update active trade UI
-    updateActiveTradeUI(currentPrice, plPercent, result);
 }
 
 function updateActiveTradeUI(currentPrice, plPercent, result) {
@@ -2957,7 +2838,7 @@ function updateMarketAnalysis(data) {
 }
 
 /* -------------------------
-   CORE BOT FUNCTIONS WITH ENHANCED ERROR HANDLING AND BITGET SUPPORT
+   CORE BOT FUNCTIONS WITH ENHANCED ERROR HANDLING
    ------------------------- */
 async function startBot(){
   if(isRunning) return;
@@ -2967,7 +2848,9 @@ async function startBot(){
     const symbol = document.getElementById("symbol").value.toUpperCase();
     const interval = document.getElementById("timeframe").value;
     const strategy = document.getElementById("trading-strategy").value;
-    const exchange = document.getElementById("exchange").value;
+    
+    // Update Telegram settings
+    updateTelegramSettings();
     
     // Reset error counters on fresh start
     resetCircuitBreaker();
@@ -2986,20 +2869,13 @@ async function startBot(){
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
-      let testUrl;
-      if (exchange === 'bitget') {
-        testUrl = 'https://api.bitget.com/api/spot/v1/market/tickers';
-      } else {
-        testUrl = 'https://api.binance.com/api/v3/ping';
-      }
-      
-      const testRes = await fetch(testUrl, {
+      const testRes = await fetch(`https://api.binance.com/api/v3/ping`, {
         signal: controller.signal
       });
       clearTimeout(timeoutId);
       
-      if (!testRes.ok) throw new Error(`${exchange} API unavailable`);
-      document.getElementById("api-status").textContent = `✅ ${exchange.toUpperCase()} API Connected`;
+      if (!testRes.ok) throw new Error("Binance API unavailable");
+      document.getElementById("api-status").textContent = "✅ API Connected";
       document.getElementById("api-status").style.color = "#00ff00";
     } catch (error) {
       throw new Error(`API test failed: ${error.message}`);
@@ -3011,8 +2887,7 @@ async function startBot(){
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
       
-      const endpoints = getExchangeEndpoints(exchange, symbol, interval);
-      const res = await fetch(endpoints.historical, {
+      const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${BUFFER_SIZE}`, {
         signal: controller.signal
       });
       clearTimeout(timeoutId);
@@ -3020,11 +2895,9 @@ async function startBot(){
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       
       const hist = await res.json();
-      if (!Array.isArray(hist.data) && !Array.isArray(hist)) throw new Error("Invalid response format");
+      if (!Array.isArray(hist)) throw new Error("Invalid response format");
       
-      // Parse data based on exchange
-      const rawData = hist.data || hist;
-      candleBuffer = rawData.map(k => parseCandleData(exchange, k));
+      candleBuffer = hist.map(k => ({ time: k[0], open: +k[1], high: +k[2], low: +k[3], close: +k[4], volume: +k[5] }));
       if(!Array.isArray(candleBuffer)) candleBuffer = [];
       
       document.getElementById("candle-count").textContent = candleBuffer.length;
@@ -3044,7 +2917,7 @@ async function startBot(){
     document.getElementById("ws-status").textContent = "🔄 Connecting...";
     document.getElementById("ws-status").style.color = "#ffaa33";
     
-    setupWebSocket(exchange, symbol, interval);
+    setupWebSocket(symbol, interval);
     
   } catch (error) {
     const errorDetails = logError(error, 'Start Bot');
@@ -3066,41 +2939,71 @@ async function startBot(){
   }
 }
 
-function setupWebSocket(exchange, symbol, interval) {
+function setupWebSocket(symbol, interval) {
   try {
-    const endpoints = getExchangeEndpoints(exchange, symbol, interval);
-    ws = new WebSocket(endpoints.websocket);
+    // Normalize symbol for Binance
+    const normalizedSymbol = symbol.replace('/', '').toLowerCase();
+    const wsUrl = `wss://stream.binance.com:9443/ws/${normalizedSymbol}@kline_${interval}`;
     
-    // Set timeout for connection
+    console.log(`🔌 Connecting to: ${wsUrl}`);
+    
+    ws = new WebSocket(wsUrl);
+    
+    // Enhanced connection timeout
     const connectionTimeout = setTimeout(() => {
       if (ws.readyState !== WebSocket.OPEN) {
-        logError(new Error('WebSocket connection timeout'), 'WebSocket Setup');
+        console.warn('WebSocket connection timeout');
         ws.close();
       }
     }, 10000);
     
     ws.onmessage = (e) => {
       try {
-        const candle = parseWebSocketData(exchange, e);
-        if (!candle) return;
+        const msg = JSON.parse(e.data);
+        if (!msg.k) {
+          console.warn('Invalid WebSocket message format:', msg);
+          return;
+        }
+        
+        const k = msg.k;
+        const candle = { 
+          time: k.t, 
+          open: +k.o, 
+          high: +k.h, 
+          low: +k.l, 
+          close: +k.c, 
+          volume: +k.v,
+          isClosed: k.x
+        };
 
-        // Reset consecutive errors on successful message
+        // Reset error counter on successful message
         consecutiveErrors = Math.max(0, consecutiveErrors - 1);
 
-        // replace last forming candle or push if empty
-        if(candleBuffer.length === 0) candleBuffer.push(candle);
-        else candleBuffer[candleBuffer.length-1] = candle;
-
-        // when candle closes, push a new placeholder (so next updates replace it)
-        if(candle.isClosed){
-          candleBuffer[candleBuffer.length-1] = candle;
+        // Update candle buffer
+        if (candleBuffer.length === 0) {
           candleBuffer.push(candle);
-          if(candleBuffer.length > BUFFER_SIZE) candleBuffer.shift();
-          document.getElementById("candle-count").textContent = candleBuffer.length;
+        } else {
+          // Replace last candle if it's the same timeframe, otherwise add new
+          const lastCandle = candleBuffer[candleBuffer.length-1];
+          if (!candle.isClosed && lastCandle.time === candle.time) {
+            candleBuffer[candleBuffer.length-1] = candle;
+          } else if (candle.isClosed) {
+            candleBuffer[candleBuffer.length-1] = candle;
+            candleBuffer.push({...candle, isClosed: false}); // New forming candle
+          } else {
+            candleBuffer.push(candle);
+          }
         }
 
+        // Maintain buffer size
+        if (candleBuffer.length > BUFFER_SIZE) {
+          candleBuffer.shift();
+        }
+
+        document.getElementById("candle-count").textContent = candleBuffer.length;
         analyzeLive();
         updateChart();
+        
       } catch (error) {
         logError(error, 'WebSocket Message Processing');
       }
@@ -3108,17 +3011,8 @@ function setupWebSocket(exchange, symbol, interval) {
 
     ws.onopen = () => { 
       clearTimeout(connectionTimeout);
-      console.info("WS open"); 
+      console.log("✅ WebSocket connected successfully"); 
       performanceMetrics.wsReconnects++;
-      
-      // Send subscribe message for Bitget
-      if (exchange === 'bitget') {
-        const subscribeMsg = getWebSocketSubscribeMessage(exchange, symbol, interval);
-        if (subscribeMsg) {
-          ws.send(subscribeMsg);
-        }
-      }
-      
       document.getElementById("ws-status").textContent = "✅ Connected";
       document.getElementById("ws-status").style.color = "#00ff00";
       resetCircuitBreaker();
@@ -3126,7 +3020,7 @@ function setupWebSocket(exchange, symbol, interval) {
     
     ws.onerror = (err) => { 
       clearTimeout(connectionTimeout);
-      console.error("WS error", err); 
+      console.error("WebSocket error:", err); 
       logError(new Error('WebSocket connection error'), 'WebSocket');
       document.getElementById("ws-status").textContent = "❌ Error";
       document.getElementById("ws-status").style.color = "#ff4444";
@@ -3134,21 +3028,20 @@ function setupWebSocket(exchange, symbol, interval) {
     
     ws.onclose = (event) => { 
       clearTimeout(connectionTimeout);
-      console.info("WS closed", event.code, event.reason); 
+      console.log(`WebSocket closed: ${event.code} - ${event.reason}`); 
       document.getElementById("ws-status").textContent = "❌ Disconnected";
       document.getElementById("ws-status").style.color = "#ff4444";
       
-      // Auto-reconnect if not manually stopped
+      // Auto-reconnect with exponential backoff
       if (isRunning && !circuitBreakerTripped) {
+        const delay = Math.min(30000, 1000 * Math.pow(2, performanceMetrics.wsReconnects));
+        console.log(`🔄 Reconnecting in ${delay/1000}s...`);
         setTimeout(() => {
           if (isRunning) {
-            console.log("🔄 Attempting WebSocket reconnection...");
-            const exchange = document.getElementById("exchange").value;
-            const symbol = document.getElementById("symbol").value.toUpperCase();
-            const interval = document.getElementById("timeframe").value;
-            setupWebSocket(exchange, symbol, interval);
+            setupWebSocket(document.getElementById("symbol").value.toUpperCase(), 
+                         document.getElementById("timeframe").value);
           }
-        }, 3000);
+        }, delay);
       }
     };
     
@@ -3173,6 +3066,9 @@ function stopBot(){
   document.getElementById("recover-btn").style.display = "none";
 }
 
+/* -------------------------
+   🔧 UPDATED: FIXED analyzeLive FUNCTION - CONTINUES SIGNALS AFTER TRADE CLOSES
+   ------------------------- */
 function analyzeLive(){
   if (circuitBreakerTripped) {
     console.warn('Circuit breaker tripped - skipping analysis');
@@ -3187,33 +3083,41 @@ function analyzeLive(){
       return;
     }
     
-    // Check active trade first
+    // Check active trade first - but don't return if trade just closed
+    let tradeJustClosed = false;
     if (activeTrade && activeTrade.open) {
       checkActiveTrade();
       
-      // Don't generate new signals while a trade is active
-      const lastSig = generateEnhancedSignal(candleBuffer, document.getElementById("risk-level").value, parseFloat(document.getElementById("tp-multiplier").value));
-      
-      // Update UI with current signal (but don't act on it)
-      document.getElementById("signal-type").textContent = "ACTIVE TRADE";
-      document.getElementById("signal-type").className = "hold";
-      document.getElementById("entry-price").textContent = activeTrade.entry ? activeTrade.entry.toFixed(5) : "-";
-      document.getElementById("tp-price").textContent = activeTrade.tp ? activeTrade.tp.toFixed(5) : "-";
-      document.getElementById("sl-price").textContent = activeTrade.sl ? activeTrade.sl.toFixed(5) : "-";
-      document.getElementById("risk-reward").textContent = activeTrade.rr ? `1:${activeTrade.rr.toFixed(2)}` : "-";
-      document.getElementById("volume-confirmation").textContent = activeTrade.volumeConfirmation;
-      document.getElementById("market-regime").textContent = activeTrade.marketRegime;
-      document.getElementById("trend-type").textContent = activeTrade.trend;
-      document.getElementById("strategy-type").innerHTML = `${activeTrade.strategy} <span class="strategy-indicator strategy-${activeTrade.strategy.toLowerCase()}">${activeTrade.strategy}</span>`;
-      document.getElementById("adaptive-score").textContent = activeTrade.adaptiveScore ? activeTrade.adaptiveScore.toFixed(1) : "-";
-      
-      document.getElementById("confidence-fill").style.width = `${activeTrade.confidence}%`;
-      document.getElementById("confidence-fill").textContent = `${activeTrade.confidence.toFixed(1)}%`;
-      document.getElementById("confidence-text").textContent = `Confidence: ${activeTrade.confidence.toFixed(1)}%`;
-      
-      return;
+      // If trade is still open after checking, update UI and return
+      if (activeTrade && activeTrade.open) {
+        const lastSig = generateEnhancedSignal(candleBuffer, document.getElementById("risk-level").value, parseFloat(document.getElementById("tp-multiplier").value));
+        
+        // Update UI with current signal (but don't act on it)
+        document.getElementById("signal-type").textContent = "ACTIVE TRADE";
+        document.getElementById("signal-type").className = "hold";
+        document.getElementById("entry-price").textContent = activeTrade.entry ? activeTrade.entry.toFixed(5) : "-";
+        document.getElementById("tp-price").textContent = activeTrade.tp ? activeTrade.tp.toFixed(5) : "-";
+        document.getElementById("sl-price").textContent = activeTrade.sl ? activeTrade.sl.toFixed(5) : "-";
+        document.getElementById("risk-reward").textContent = activeTrade.rr ? `1:${activeTrade.rr.toFixed(2)}` : "-";
+        document.getElementById("volume-confirmation").textContent = activeTrade.volumeConfirmation;
+        document.getElementById("market-regime").textContent = activeTrade.marketRegime;
+        document.getElementById("trend-type").textContent = activeTrade.trend;
+        document.getElementById("strategy-type").innerHTML = `${activeTrade.strategy} <span class="strategy-indicator strategy-${activeTrade.strategy.toLowerCase()}">${activeTrade.strategy}</span>`;
+        document.getElementById("adaptive-score").textContent = activeTrade.adaptiveScore ? activeTrade.adaptiveScore.toFixed(1) : "-";
+        
+        document.getElementById("confidence-fill").style.width = `${activeTrade.confidence}%`;
+        document.getElementById("confidence-fill").textContent = `${activeTrade.confidence.toFixed(1)}%`;
+        document.getElementById("confidence-text").textContent = `Confidence: ${activeTrade.confidence.toFixed(1)}%`;
+        
+        return; // Only return if trade is still active
+      } else {
+        // Trade was closed in checkActiveTrade(), allow signal generation to continue
+        tradeJustClosed = true;
+        console.log("🔄 Trade closed, looking for new signals...");
+      }
     }
     
+    // Continue with normal signal generation (either no active trade or trade just closed)
     const risk = document.getElementById("risk-level").value;
     const tpMultiplier = parseFloat(document.getElementById("tp-multiplier").value);
     const symbol = document.getElementById("symbol").value.toUpperCase();
@@ -3246,8 +3150,8 @@ function analyzeLive(){
 
     const currentTime = Date.now();
     
-    if(sig.signal !== "HOLD" && sig.confidence >= 60) {
-      if(sig.signal !== lastSignal || currentTime - lastSignalTime > SIGNAL_COOLDOWN){
+    if(sig.signal !== "HOLD" && sig.confidence >= 55) {
+      if(sig.signal !== lastSignal || currentTime - lastSignalTime > SIGNAL_COOLDOWN || tradeJustClosed){
         lastSignal = sig.signal;
         lastSignalTime = currentTime;
         signalCount++;
@@ -3274,7 +3178,7 @@ function analyzeLive(){
         
         renderSignalCard(symbol, sig);
         
-        if(sig.confidence >= 70) {
+        if(sig.confidence >= 65) {
           document.getElementById("alert-sound").play();
           document.getElementById("signal-type").style.animation = "pulse 1s infinite";
           setTimeout(() => {
@@ -3325,7 +3229,6 @@ function renderSignalCard(symbol, sig) {
       <div><strong>FVG:</strong> ${sig.fvGaps}</div>
       <div><strong>Strategy:</strong> ${sig.strategy}</div>
       <div><strong>Adaptive Score:</strong> ${sig.adaptiveScore ? sig.adaptiveScore.toFixed(1) : 'N/A'}</div>
-      <div><strong>Position Size:</strong> ${sig.positionSize ? '$' + sig.positionSize.toFixed(2) : 'N/A'}</div>
       <div><strong>Time:</strong> ${new Date().toLocaleString()}</div>
     </div>
   `;
@@ -3457,7 +3360,6 @@ async function runBacktest(){
   const risk = document.getElementById("risk-level").value;
   const tpMultiplier = parseFloat(document.getElementById("tp-multiplier").value);
   const strategy = document.getElementById("trading-strategy").value;
-  const exchange = document.getElementById("exchange").value;
 
   document.getElementById("backtest-results").style.display = "block";
   document.getElementById("backtest-results").innerHTML = `<div>Running adaptive backtest for <b>${symbol}</b> using ${strategy} strategy... (this may take a few seconds)</div>`;
@@ -3468,16 +3370,14 @@ async function runBacktest(){
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
     
-    const endpoints = getExchangeEndpoints(exchange, symbol, interval);
-    const res = await fetch(endpoints.historical, {
-      signal: controller.signal
+    const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`, {
+        signal: controller.signal
     });
     clearTimeout(timeoutId);
     
     const raw = await res.json();
-    const rawData = raw.data || raw;
-    if(!Array.isArray(rawData) || rawData.length === 0) throw new Error("Bad response");
-    const candles = rawData.map(k => parseCandleData(exchange, k));
+    if(!Array.isArray(raw) || raw.length === 0) throw new Error("Bad response");
+    const candles = raw.map(k=>({ time:k[0], open:+k[1], high:+k[2], low:+k[3], close:+k[4], volume:+k[5] }));
 
     let trades = [];
     const lookaheadBars = 12;
@@ -3771,7 +3671,7 @@ function generateBacktestSignal(data, riskLevel, tpMultiplier, strategy) {
   let sl = lastClose;
   let rr = 0;
 
-  if (signal !== "HOLD" && confidence >= 60) {
+  if (signal !== "HOLD" && confidence >= 55) { // REDUCED
     entry = lastClose;
     sl = smartStopLoss(data, signal, confidence);
     const risk = Math.max(Math.abs(entry - sl), entry * 0.002);
@@ -3809,6 +3709,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Set up periodic health checks
   setInterval(updatePerformanceMetrics, 10000);
+  
+  // Initialize Telegram settings
+  updateTelegramSettings();
 });
 
 /* -------------------------
