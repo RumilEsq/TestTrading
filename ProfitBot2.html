@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Advanced Live Trading Signal Bot - Adaptive Strategy Detection</title>
+<title>Multi-Crypto Trading Signal Bot - Adaptive Strategy Detection</title>
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -240,6 +240,7 @@
     border: 1px solid #333;
     transition: all 0.3s ease;
     position: relative;
+    cursor: pointer;
   }
   
   .signal-card::before {
@@ -561,6 +562,72 @@
     border: 1px solid #cccccc;
     color: #cccccc;
   }
+
+  /* NEW: Symbol Selection */
+  .symbol-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .symbol-btn {
+    padding: 8px 15px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .symbol-btn.active {
+    background: linear-gradient(45deg, #00eaff, #0099cc);
+    color: white;
+    border-color: #00eaff;
+  }
+  
+  .symbol-btn:hover {
+    background: rgba(0,234,255,0.2);
+    border-color: #00eaff;
+  }
+  
+  /* NEW: Multi-symbol signals */
+  .multi-symbol-signals {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .symbol-signal {
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .symbol-signal.buy {
+    border-color: #00ff99;
+    background: rgba(0,255,153,0.1);
+  }
+  
+  .symbol-signal.sell {
+    border-color: #ff4444;
+    background: rgba(255,68,68,0.1);
+  }
+  
+  .symbol-signal.hold {
+    border-color: #999;
+    background: rgba(153,153,153,0.1);
+  }
+  
+  .symbol-signal.active {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0,234,255,0.3);
+  }
   
   /* Responsive Design */
   @media (max-width: 1200px) {
@@ -578,14 +645,15 @@
     .buttons-container { flex-direction: column; }
     .signal-info { grid-template-columns: 1fr; }
     .trade-details { grid-template-columns: 1fr; }
+    .multi-symbol-signals { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
 <body>
   <div class="main-container">
     <div class="header">
-      <h1>🚀 Adaptive Trading Signal Bot</h1>
-      <p>Smart Strategy Detection Based on Market Conditions</p>
+      <h1>🚀 Multi-Crypto Trading Signal Bot</h1>
+      <p>Smart Strategy Detection for Multiple Cryptocurrencies</p>
     </div>
 
     <!-- NEW: Error Display Panel -->
@@ -633,9 +701,10 @@
             <input type="number" id="tp-multiplier" value="1.5" step="0.1" min="1" max="5">
           </div>
 
+          <!-- NEW: Multi-symbol input -->
           <div class="control-group">
-            <label>💰 Symbol/Pair</label>
-            <input type="text" id="symbol" value="BTCUSDT" placeholder="e.g., BTCUSDT">
+            <label>💰 Symbols/Pairs (comma separated)</label>
+            <input type="text" id="symbols" value="BTCUSDT,ETHUSDT,AVAXUSDT,DOGEUSDT,XRPUSDT,AVNTUSDT,KAITOUSDT" placeholder="e.g., BTCUSDT,ETHUSDT,AVAXUSDT">
           </div>
           
           <div class="control-group">
@@ -695,8 +764,19 @@
           <button id="test-telegram-btn" onclick="testTelegramAlert()" style="background: linear-gradient(45deg, #0088cc, #006699); color: white;">📱 TEST TELEGRAM</button>
         </div>
 
+        <!-- NEW: Symbol Selector -->
+        <div class="symbol-selector" id="symbol-selector">
+          <!-- Symbols will be added dynamically -->
+        </div>
+
+        <!-- NEW: Multi-Symbol Signals Overview -->
+        <div class="multi-symbol-signals" id="multi-symbol-signals">
+          <!-- Symbol signals will be added dynamically -->
+        </div>
+
         <div class="signal-display">
           <h2 id="signal-type" class="hold">HOLD</h2>
+          <div id="current-symbol" style="font-size: 1.2em; margin-bottom: 10px; color: #00eaff;">BTCUSDT</div>
           
           <div class="signal-info">
             <p><strong>Entry:</strong> <span id="entry-price">-</span></p>
@@ -720,7 +800,7 @@
       <!-- SIDEBAR -->
       <div class="sidebar">
         <div class="signals-feed">
-          <h3>📡 Adaptive Signals Feed</h3>
+          <h3>📡 Multi-Crypto Signals Feed</h3>
           <div class="signals-container" id="signals-container">
             <div style="text-align: center; color: #666; padding: 40px 20px;">
               <p>🔄 Waiting for adaptive signals...</p>
@@ -736,6 +816,7 @@
             No Active Trade
           </div>
           <div id="trade-details" class="trade-details">
+            <div><strong>Symbol:</strong> <span id="active-trade-symbol">-</span></div>
             <div><strong>Signal:</strong> <span id="active-trade-signal">-</span></div>
             <div><strong>Entry:</strong> <span id="active-trade-entry">-</span></div>
             <div><strong>TP:</strong> <span id="active-trade-tp">-</span></div>
@@ -770,8 +851,8 @@
             <span id="ws-status" style="color: #ff4444;">❌ Disconnected</span>
           </div>
           <div class="status-info">
-            <span>Candles Loaded:</span>
-            <span id="candle-count">0</span>
+            <span>Active Symbols:</span>
+            <span id="active-symbols">0</span>
           </div>
           <div class="status-info">
             <span>API Status:</span>
@@ -922,13 +1003,17 @@
    Enhanced Config / Globals
    ------------------------- */
 let isRunning = false;
-let lastSignal = null;
-let candleBuffer = [];
+let lastSignals = {}; // Changed to object for multiple symbols
+let candleBuffers = {}; // Changed to object for multiple symbols
 const BUFFER_SIZE = 600;
 let ws = null;
 let signalCount = 0;
 let lastSignalTime = 0;
 const SIGNAL_COOLDOWN = 30000;
+
+// NEW: Multi-symbol support
+let selectedSymbol = "BTCUSDT"; // Default selected symbol
+let symbols = []; // Array of symbols to monitor
 
 // NEW: Enhanced error handling and recovery
 let errorCount = 0;
@@ -947,8 +1032,8 @@ let performanceMetrics = {
   lastHealthCheck: null
 };
 
-// NEW: Active trade tracking
-let activeTrade = null;
+// NEW: Active trade tracking (per symbol)
+let activeTrades = {}; // Changed to object for multiple symbols
 let tradeHistory = [];
 
 // NEW: Strategy tracking
@@ -1064,6 +1149,85 @@ const enhancedConfig = {
 };
 
 /* -------------------------
+   NEW: MULTI-SYMBOL FUNCTIONS
+   ------------------------- */
+function parseSymbols() {
+    const symbolsInput = document.getElementById("symbols").value;
+    const symbolsArray = symbolsInput.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
+    
+    // Remove duplicates
+    symbols = [...new Set(symbolsArray)];
+    
+    // Update UI
+    updateSymbolSelector();
+    updateActiveSymbolsCount();
+    
+    return symbols;
+}
+
+function updateSymbolSelector() {
+    const selector = document.getElementById("symbol-selector");
+    selector.innerHTML = '';
+    
+    symbols.forEach(symbol => {
+        const button = document.createElement("button");
+        button.className = `symbol-btn ${symbol === selectedSymbol ? 'active' : ''}`;
+        button.textContent = symbol;
+        button.onclick = () => selectSymbol(symbol);
+        selector.appendChild(button);
+    });
+}
+
+function selectSymbol(symbol) {
+    selectedSymbol = symbol;
+    
+    // Update UI
+    updateSymbolSelector();
+    document.getElementById("current-symbol").textContent = symbol;
+    
+    // Update chart and analysis for selected symbol
+    if (candleBuffers[symbol] && candleBuffers[symbol].length > 0) {
+        updateChart();
+        updateMarketAnalysis(candleBuffers[symbol]);
+        
+        // Update signal display for selected symbol
+        if (lastSignals[symbol]) {
+            updateSignalDisplay(lastSignals[symbol], symbol);
+        }
+    }
+    
+    // Update active trade display
+    updateActiveTradeUI();
+}
+
+function updateActiveSymbolsCount() {
+    document.getElementById("active-symbols").textContent = symbols.length;
+}
+
+function updateMultiSymbolSignals() {
+    const container = document.getElementById("multi-symbol-signals");
+    container.innerHTML = '';
+    
+    symbols.forEach(symbol => {
+        if (lastSignals[symbol]) {
+            const signal = lastSignals[symbol];
+            const signalElement = document.createElement("div");
+            signalElement.className = `symbol-signal ${signal.signal.toLowerCase()} ${symbol === selectedSymbol ? 'active' : ''}`;
+            signalElement.innerHTML = `
+                <div style="font-weight: bold;">${symbol}</div>
+                <div style="font-size: 1.2em; margin: 5px 0; color: ${signal.signal === 'BUY' ? '#00ff99' : signal.signal === 'SELL' ? '#ff4444' : '#999'}">
+                    ${signal.signal}
+                </div>
+                <div style="font-size: 0.8em;">${signal.confidence.toFixed(1)}%</div>
+                <div style="font-size: 0.7em; margin-top: 3px;">${signal.strategy}</div>
+            `;
+            signalElement.onclick = () => selectSymbol(symbol);
+            container.appendChild(signalElement);
+        }
+    });
+}
+
+/* -------------------------
    NEW: TELEGRAM ALERTS FUNCTIONALITY
    ------------------------- */
 async function sendTelegramAlert(message) {
@@ -1169,7 +1333,7 @@ async function testTelegramAlert() {
     const testMessage = `
 🤖 <b>TRADING BOT TEST ALERT</b> 🤖
 
-This is a test message from your Adaptive Trading Signal Bot.
+This is a test message from your Multi-Crypto Trading Signal Bot.
 
 <b>Status:</b> ✅ Bot is working correctly
 <b>Telegram:</b> ✅ Alerts are enabled
@@ -1441,7 +1605,7 @@ async function attemptRecovery() {
         }
         
         // Clear buffers
-        candleBuffer = [];
+        candleBuffers = {};
         
         // Reset error counters
         resetCircuitBreaker();
@@ -2558,52 +2722,54 @@ function generateEnhancedSignal(data, riskLevel, tpMultiplier){
 }
 
 /* -------------------------
-   NEW: ACTIVE TRADE MANAGEMENT FUNCTIONS
+   NEW: ACTIVE TRADE MANAGEMENT FUNCTIONS (UPDATED FOR MULTI-SYMBOL)
    ------------------------- */
-function checkActiveTrade() {
-    if (!activeTrade || !activeTrade.open) {
-        console.log("🔄 No active trade to check");
+function checkActiveTrade(symbol) {
+    if (!activeTrades[symbol] || !activeTrades[symbol].open) {
+        console.log(`🔄 No active trade for ${symbol}`);
         return;
     }
     
-    const currentPrice = candleBuffer.length > 0 ? candleBuffer[candleBuffer.length-1].close : activeTrade.entry;
+    const currentPrice = candleBuffers[symbol] && candleBuffers[symbol].length > 0 ? 
+        candleBuffers[symbol][candleBuffers[symbol].length-1].close : activeTrades[symbol].entry;
     let result = "OPEN";
     let plPercent = 0;
     
-    if (activeTrade.signal === "BUY") {
-        plPercent = ((currentPrice - activeTrade.entry) / activeTrade.entry) * 100;
+    if (activeTrades[symbol].signal === "BUY") {
+        plPercent = ((currentPrice - activeTrades[symbol].entry) / activeTrades[symbol].entry) * 100;
         
-        if (currentPrice >= activeTrade.tp) {
+        if (currentPrice >= activeTrades[symbol].tp) {
             result = "TP HIT";
-            console.log(`💰 Take Profit hit at ${currentPrice}`);
-            closeActiveTrade("TP HIT", currentPrice);
-        } else if (currentPrice <= activeTrade.sl) {
+            console.log(`💰 Take Profit hit for ${symbol} at ${currentPrice}`);
+            closeActiveTrade(symbol, "TP HIT", currentPrice);
+        } else if (currentPrice <= activeTrades[symbol].sl) {
             result = "SL HIT";
-            console.log(`🛑 Stop Loss hit at ${currentPrice}`);
-            closeActiveTrade("SL HIT", currentPrice);
+            console.log(`🛑 Stop Loss hit for ${symbol} at ${currentPrice}`);
+            closeActiveTrade(symbol, "SL HIT", currentPrice);
         }
-    } else if (activeTrade.signal === "SELL") {
-        plPercent = ((activeTrade.entry - currentPrice) / activeTrade.entry) * 100;
+    } else if (activeTrades[symbol].signal === "SELL") {
+        plPercent = ((activeTrades[symbol].entry - currentPrice) / activeTrades[symbol].entry) * 100;
         
-        if (currentPrice <= activeTrade.tp) {
+        if (currentPrice <= activeTrades[symbol].tp) {
             result = "TP HIT";
-            console.log(`💰 Take Profit hit at ${currentPrice}`);
-            closeActiveTrade("TP HIT", currentPrice);
-        } else if (currentPrice >= activeTrade.sl) {
+            console.log(`💰 Take Profit hit for ${symbol} at ${currentPrice}`);
+            closeActiveTrade(symbol, "TP HIT", currentPrice);
+        } else if (currentPrice >= activeTrades[symbol].sl) {
             result = "SL HIT";
-            console.log(`🛑 Stop Loss hit at ${currentPrice}`);
-            closeActiveTrade("SL HIT", currentPrice);
+            console.log(`🛑 Stop Loss hit for ${symbol} at ${currentPrice}`);
+            closeActiveTrade(symbol, "SL HIT", currentPrice);
         }
     }
     
-    // Update active trade UI only if trade is still open
-    if (activeTrade && activeTrade.open) {
+    // Update active trade UI only if trade is still open and is the selected symbol
+    if (activeTrades[symbol] && activeTrades[symbol].open && symbol === selectedSymbol) {
         updateActiveTradeUI(currentPrice, plPercent, result);
     }
 }
 
-function openNewTrade(signal, entry, tp, sl, confidence, marketRegime, trend, volumeConfirmation, patterns, strategy, adaptiveScore) {
-    activeTrade = {
+function openNewTrade(symbol, signal, entry, tp, sl, confidence, marketRegime, trend, volumeConfirmation, patterns, strategy, adaptiveScore) {
+    activeTrades[symbol] = {
+        symbol: symbol,
         signal: signal,
         entry: entry,
         tp: tp,
@@ -2620,18 +2786,20 @@ function openNewTrade(signal, entry, tp, sl, confidence, marketRegime, trend, vo
         result: "OPEN"
     };
     
-    // Update UI
-    document.getElementById("trade-status").textContent = "ACTIVE TRADE";
-    document.getElementById("trade-status").className = "trade-status active";
+    // Update UI if this is the selected symbol
+    if (symbol === selectedSymbol) {
+        document.getElementById("trade-status").textContent = "ACTIVE TRADE";
+        document.getElementById("trade-status").className = "trade-status active";
+        
+        updateActiveTradeUI(entry, 0, "OPEN");
+    }
     
-    updateActiveTradeUI(entry, 0, "OPEN");
-    
-    console.log(`🔄 New ${signal} trade opened at ${entry} using ${strategy} strategy`);
+    console.log(`🔄 New ${signal} trade opened for ${symbol} at ${entry} using ${strategy} strategy`);
     
     // Send Telegram alert for new trade
     if (telegramAlertsEnabled && telegramChatId) {
         sendSignalTelegramAlert(
-            document.getElementById("symbol").value.toUpperCase(),
+            symbol,
             signal,
             entry,
             tp,
@@ -2643,59 +2811,63 @@ function openNewTrade(signal, entry, tp, sl, confidence, marketRegime, trend, vo
     }
 }
 
-function closeActiveTrade(result, exitPrice) {
-    if (!activeTrade) return;
+function closeActiveTrade(symbol, result, exitPrice) {
+    if (!activeTrades[symbol]) return;
     
-    activeTrade.open = false;
-    activeTrade.closeTime = new Date();
-    activeTrade.result = result;
-    activeTrade.exitPrice = exitPrice;
+    activeTrades[symbol].open = false;
+    activeTrades[symbol].closeTime = new Date();
+    activeTrades[symbol].result = result;
+    activeTrades[symbol].exitPrice = exitPrice;
     
     // Calculate P/L
     let plPercent = 0;
-    if (activeTrade.signal === "BUY") {
-        plPercent = ((exitPrice - activeTrade.entry) / activeTrade.entry) * 100;
+    if (activeTrades[symbol].signal === "BUY") {
+        plPercent = ((exitPrice - activeTrades[symbol].entry) / activeTrades[symbol].entry) * 100;
     } else {
-        plPercent = ((activeTrade.entry - exitPrice) / activeTrade.entry) * 100;
+        plPercent = ((activeTrades[symbol].entry - exitPrice) / activeTrades[symbol].entry) * 100;
     }
-    activeTrade.plPercent = plPercent;
+    activeTrades[symbol].plPercent = plPercent;
     
     // Add to history
-    tradeHistory.push({...activeTrade});
+    tradeHistory.push({...activeTrades[symbol]});
     
-    // Update UI
-    document.getElementById("trade-status").textContent = "TRADE CLOSED: " + result;
-    document.getElementById("trade-status").className = "trade-status inactive";
+    // Update UI if this is the selected symbol
+    if (symbol === selectedSymbol) {
+        document.getElementById("trade-status").textContent = "TRADE CLOSED: " + result;
+        document.getElementById("trade-status").className = "trade-status inactive";
+    }
     
     // Log the closed trade
-    logTradeClose(activeTrade);
+    logTradeClose(activeTrades[symbol]);
     
-    console.log(`🔒 Trade closed: ${result} at ${exitPrice} (P/L: ${plPercent.toFixed(2)}%)`);
+    console.log(`🔒 Trade closed for ${symbol}: ${result} at ${exitPrice} (P/L: ${plPercent.toFixed(2)}%)`);
     
     // Send Telegram alert for trade closure
     if (telegramAlertsEnabled && telegramChatId) {
         sendTradeUpdateTelegramAlert(
-            document.getElementById("symbol").value.toUpperCase(),
-            activeTrade,
+            symbol,
+            activeTrades[symbol],
             result,
             exitPrice
         );
     }
     
-    // Reset active trade
-    activeTrade = null;
+    // Reset active trade for this symbol
+    activeTrades[symbol] = null;
     
     // Play sound for trade closure
     document.getElementById("alert-sound").play();
 }
 
 function updateActiveTradeUI(currentPrice, plPercent, result) {
-    if (!activeTrade) return;
+    const trade = activeTrades[selectedSymbol];
+    if (!trade) return;
     
-    document.getElementById("active-trade-signal").textContent = activeTrade.signal;
-    document.getElementById("active-trade-entry").textContent = activeTrade.entry.toFixed(5);
-    document.getElementById("active-trade-tp").textContent = activeTrade.tp.toFixed(5);
-    document.getElementById("active-trade-sl").textContent = activeTrade.sl.toFixed(5);
+    document.getElementById("active-trade-symbol").textContent = trade.symbol;
+    document.getElementById("active-trade-signal").textContent = trade.signal;
+    document.getElementById("active-trade-entry").textContent = trade.entry.toFixed(5);
+    document.getElementById("active-trade-tp").textContent = trade.tp.toFixed(5);
+    document.getElementById("active-trade-sl").textContent = trade.sl.toFixed(5);
     
     const plColor = plPercent >= 0 ? "#00ff00" : "#ff4444";
     document.getElementById("active-trade-pl").innerHTML = `<span style="color: ${plColor}">${plPercent.toFixed(2)}%</span>`;
@@ -2740,7 +2912,7 @@ function updateStrategyAnalysis(marketConditions, strategySelection) {
     
     // Update Adaptive Logic
     const logicHtml = `
-        <div><strong>Selected Strategy:</strong> <span class="strategy-indicator strategy-${strategySelection.strategy}">${strategySelection.strategy.toUpperCase()}</span></div>
+        <div><strong>Selected Strategy:</strong> <span class="strategy-indicator strategy-${strategySelection.strategy.toLowerCase()}">${strategySelection.strategy.toUpperCase()}</span></div>
         <div><strong>Selection Score:</strong> ${strategySelection.score.toFixed(1)}</div>
         <div><strong>Reason:</strong> ${getStrategySelectionReason(marketConditions, strategySelection)}</div>
     `;
@@ -2777,15 +2949,15 @@ function switchTab(tabName) {
     } else if (tabName === 'analysis') {
         document.querySelectorAll('.tab-button')[2].classList.add('active');
         document.getElementById('analysis-tab').style.display = 'block';
-        if (candleBuffer.length > 0) {
-            updateMarketAnalysis(candleBuffer);
+        if (candleBuffers[selectedSymbol] && candleBuffers[selectedSymbol].length > 0) {
+            updateMarketAnalysis(candleBuffers[selectedSymbol]);
         }
     } else if (tabName === 'strategy') {
         document.querySelectorAll('.tab-button')[3].classList.add('active');
         document.getElementById('strategy-tab').style.display = 'block';
-        if (candleBuffer.length > 0) {
-            const marketConditions = analyzeMarketConditions(candleBuffer);
-            const strategySelection = adaptiveStrategySelection(candleBuffer);
+        if (candleBuffers[selectedSymbol] && candleBuffers[selectedSymbol].length > 0) {
+            const marketConditions = analyzeMarketConditions(candleBuffers[selectedSymbol]);
+            const strategySelection = adaptiveStrategySelection(candleBuffers[selectedSymbol]);
             updateStrategyAnalysis(marketConditions, strategySelection);
         }
     } else if (tabName === 'performance') {
@@ -2838,14 +3010,20 @@ function updateMarketAnalysis(data) {
 }
 
 /* -------------------------
-   CORE BOT FUNCTIONS WITH ENHANCED ERROR HANDLING
+   CORE BOT FUNCTIONS WITH ENHANCED ERROR HANDLING AND MULTI-SYMBOL SUPPORT
    ------------------------- */
 async function startBot(){
   if(isRunning) return;
   
   try {
     isRunning = true;
-    const symbol = document.getElementById("symbol").value.toUpperCase();
+    
+    // Parse symbols
+    parseSymbols();
+    if (symbols.length === 0) {
+      throw new Error("No valid symbols provided");
+    }
+    
     const interval = document.getElementById("timeframe").value;
     const strategy = document.getElementById("trading-strategy").value;
     
@@ -2881,32 +3059,46 @@ async function startBot(){
       throw new Error(`API test failed: ${error.message}`);
     }
 
-    // Preload historic candles with error handling
+    // Preload historic candles for each symbol with error handling
     try {
       document.getElementById("api-status").textContent = "🔄 Loading data...";
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
       
-      const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${BUFFER_SIZE}`, {
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
+      for (const symbol of symbols) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        
+        const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${BUFFER_SIZE}`, {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText} for ${symbol}`);
+        
+        const hist = await res.json();
+        if (!Array.isArray(hist)) throw new Error("Invalid response format");
+        
+        candleBuffers[symbol] = hist.map(k => ({ time: k[0], open: +k[1], high: +k[2], low: +k[3], close: +k[4], volume: +k[5] }));
+        lastSignals[symbol] = null;
+        
+        console.log(`✅ Loaded ${candleBuffers[symbol].length} candles for ${symbol}`);
+      }
       
-      if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-      
-      const hist = await res.json();
-      if (!Array.isArray(hist)) throw new Error("Invalid response format");
-      
-      candleBuffer = hist.map(k => ({ time: k[0], open: +k[1], high: +k[2], low: +k[3], close: +k[4], volume: +k[5] }));
-      if(!Array.isArray(candleBuffer)) candleBuffer = [];
-      
-      document.getElementById("candle-count").textContent = candleBuffer.length;
+      // Initialize candle count display
+      if (document.getElementById("candle-count")) {
+        document.getElementById("candle-count").textContent = candleBuffers[selectedSymbol] ? candleBuffers[selectedSymbol].length : 0;
+      }
       document.getElementById("api-status").textContent = "✅ Data loaded";
     } catch (err) {
       throw new Error(`Failed to fetch historical candles: ${err.message}`);
     }
 
-    analyzeLive();
+    // Analyze initial data for each symbol
+    symbols.forEach(symbol => {
+      if (candleBuffers[symbol] && candleBuffers[symbol].length > 0) {
+        analyzeLive(symbol);
+      }
+    });
+    
     updateChart();
 
     // Open websocket for live kline updates with enhanced error handling
@@ -2917,7 +3109,7 @@ async function startBot(){
     document.getElementById("ws-status").textContent = "🔄 Connecting...";
     document.getElementById("ws-status").style.color = "#ffaa33";
     
-    setupWebSocket(symbol, interval);
+    setupWebSocket(symbols, interval);
     
   } catch (error) {
     const errorDetails = logError(error, 'Start Bot');
@@ -2939,11 +3131,11 @@ async function startBot(){
   }
 }
 
-function setupWebSocket(symbol, interval) {
+function setupWebSocket(symbols, interval) {
   try {
-    // Normalize symbol for Binance
-    const normalizedSymbol = symbol.replace('/', '').toLowerCase();
-    const wsUrl = `wss://stream.binance.com:9443/ws/${normalizedSymbol}@kline_${interval}`;
+    // Create combined stream URL for multiple symbols
+    const streams = symbols.map(sym => `${sym.toLowerCase()}@kline_${interval}`).join('/');
+    const wsUrl = `wss://stream.binance.com:9443/stream?streams=${streams}`;
     
     console.log(`🔌 Connecting to: ${wsUrl}`);
     
@@ -2960,12 +3152,16 @@ function setupWebSocket(symbol, interval) {
     ws.onmessage = (e) => {
       try {
         const msg = JSON.parse(e.data);
-        if (!msg.k) {
+        if (!msg.stream || !msg.data) {
           console.warn('Invalid WebSocket message format:', msg);
           return;
         }
         
-        const k = msg.k;
+        // Extract symbol from stream name (e.g., "btcusdt@kline_15m" -> "BTCUSDT")
+        const stream = msg.stream;
+        const symbol = stream.split('@')[0].toUpperCase();
+        const k = msg.data.k;
+        
         const candle = { 
           time: k.t, 
           open: +k.o, 
@@ -2979,30 +3175,43 @@ function setupWebSocket(symbol, interval) {
         // Reset error counter on successful message
         consecutiveErrors = Math.max(0, consecutiveErrors - 1);
 
-        // Update candle buffer
-        if (candleBuffer.length === 0) {
-          candleBuffer.push(candle);
+        // Update candle buffer for this symbol
+        if (!candleBuffers[symbol]) {
+          candleBuffers[symbol] = [];
+        }
+        
+        if (candleBuffers[symbol].length === 0) {
+          candleBuffers[symbol].push(candle);
         } else {
           // Replace last candle if it's the same timeframe, otherwise add new
-          const lastCandle = candleBuffer[candleBuffer.length-1];
+          const lastCandle = candleBuffers[symbol][candleBuffers[symbol].length-1];
           if (!candle.isClosed && lastCandle.time === candle.time) {
-            candleBuffer[candleBuffer.length-1] = candle;
+            candleBuffers[symbol][candleBuffers[symbol].length-1] = candle;
           } else if (candle.isClosed) {
-            candleBuffer[candleBuffer.length-1] = candle;
-            candleBuffer.push({...candle, isClosed: false}); // New forming candle
+            candleBuffers[symbol][candleBuffers[symbol].length-1] = candle;
+            candleBuffers[symbol].push({...candle, isClosed: false}); // New forming candle
           } else {
-            candleBuffer.push(candle);
+            candleBuffers[symbol].push(candle);
           }
         }
 
         // Maintain buffer size
-        if (candleBuffer.length > BUFFER_SIZE) {
-          candleBuffer.shift();
+        if (candleBuffers[symbol].length > BUFFER_SIZE) {
+          candleBuffers[symbol].shift();
         }
 
-        document.getElementById("candle-count").textContent = candleBuffer.length;
-        analyzeLive();
-        updateChart();
+        // Update candle count for selected symbol
+        if (symbol === selectedSymbol && document.getElementById("candle-count")) {
+          document.getElementById("candle-count").textContent = candleBuffers[symbol].length;
+        }
+        
+        // Analyze this symbol
+        analyzeLive(symbol);
+        
+        // Update chart if this is the selected symbol
+        if (symbol === selectedSymbol) {
+          updateChart();
+        }
         
       } catch (error) {
         logError(error, 'WebSocket Message Processing');
@@ -3038,8 +3247,7 @@ function setupWebSocket(symbol, interval) {
         console.log(`🔄 Reconnecting in ${delay/1000}s...`);
         setTimeout(() => {
           if (isRunning) {
-            setupWebSocket(document.getElementById("symbol").value.toUpperCase(), 
-                         document.getElementById("timeframe").value);
+            setupWebSocket(symbols, document.getElementById("timeframe").value);
           }
         }, delay);
       }
@@ -3067,9 +3275,9 @@ function stopBot(){
 }
 
 /* -------------------------
-   🔧 UPDATED: FIXED analyzeLive FUNCTION - CONTINUES SIGNALS AFTER TRADE CLOSES
+   🔧 UPDATED: FIXED analyzeLive FUNCTION - MULTI-SYMBOL SUPPORT
    ------------------------- */
-function analyzeLive(){
+function analyzeLive(symbol){
   if (circuitBreakerTripped) {
     console.warn('Circuit breaker tripped - skipping analysis');
     return;
@@ -3078,81 +3286,80 @@ function analyzeLive(){
   const startTime = performance.now();
   
   try {
-    if(candleBuffer.length < 30) {
-      console.log("Not enough data for enhanced analysis:", candleBuffer.length);
+    if(!candleBuffers[symbol] || candleBuffers[symbol].length < 30) {
+      console.log(`Not enough data for ${symbol}:`, candleBuffers[symbol] ? candleBuffers[symbol].length : 0);
       return;
     }
     
-    // Check active trade first - but don't return if trade just closed
+    // Check active trade for this symbol first
     let tradeJustClosed = false;
-    if (activeTrade && activeTrade.open) {
-      checkActiveTrade();
+    if (activeTrades[symbol] && activeTrades[symbol].open) {
+      checkActiveTrade(symbol);
       
       // If trade is still open after checking, update UI and return
-      if (activeTrade && activeTrade.open) {
-        const lastSig = generateEnhancedSignal(candleBuffer, document.getElementById("risk-level").value, parseFloat(document.getElementById("tp-multiplier").value));
+      if (activeTrades[symbol] && activeTrades[symbol].open) {
+        const lastSig = generateEnhancedSignal(candleBuffers[symbol], document.getElementById("risk-level").value, parseFloat(document.getElementById("tp-multiplier").value));
         
-        // Update UI with current signal (but don't act on it)
-        document.getElementById("signal-type").textContent = "ACTIVE TRADE";
-        document.getElementById("signal-type").className = "hold";
-        document.getElementById("entry-price").textContent = activeTrade.entry ? activeTrade.entry.toFixed(5) : "-";
-        document.getElementById("tp-price").textContent = activeTrade.tp ? activeTrade.tp.toFixed(5) : "-";
-        document.getElementById("sl-price").textContent = activeTrade.sl ? activeTrade.sl.toFixed(5) : "-";
-        document.getElementById("risk-reward").textContent = activeTrade.rr ? `1:${activeTrade.rr.toFixed(2)}` : "-";
-        document.getElementById("volume-confirmation").textContent = activeTrade.volumeConfirmation;
-        document.getElementById("market-regime").textContent = activeTrade.marketRegime;
-        document.getElementById("trend-type").textContent = activeTrade.trend;
-        document.getElementById("strategy-type").innerHTML = `${activeTrade.strategy} <span class="strategy-indicator strategy-${activeTrade.strategy.toLowerCase()}">${activeTrade.strategy}</span>`;
-        document.getElementById("adaptive-score").textContent = activeTrade.adaptiveScore ? activeTrade.adaptiveScore.toFixed(1) : "-";
-        
-        document.getElementById("confidence-fill").style.width = `${activeTrade.confidence}%`;
-        document.getElementById("confidence-fill").textContent = `${activeTrade.confidence.toFixed(1)}%`;
-        document.getElementById("confidence-text").textContent = `Confidence: ${activeTrade.confidence.toFixed(1)}%`;
+        // Update UI with current signal (but don't act on it) if this is the selected symbol
+        if (symbol === selectedSymbol) {
+          document.getElementById("signal-type").textContent = "ACTIVE TRADE";
+          document.getElementById("signal-type").className = "hold";
+          document.getElementById("entry-price").textContent = activeTrades[symbol].entry ? activeTrades[symbol].entry.toFixed(5) : "-";
+          document.getElementById("tp-price").textContent = activeTrades[symbol].tp ? activeTrades[symbol].tp.toFixed(5) : "-";
+          document.getElementById("sl-price").textContent = activeTrades[symbol].sl ? activeTrades[symbol].sl.toFixed(5) : "-";
+          document.getElementById("risk-reward").textContent = activeTrades[symbol].rr ? `1:${activeTrades[symbol].rr.toFixed(2)}` : "-";
+          document.getElementById("volume-confirmation").textContent = activeTrades[symbol].volumeConfirmation;
+          document.getElementById("market-regime").textContent = activeTrades[symbol].marketRegime;
+          document.getElementById("trend-type").textContent = activeTrades[symbol].trend;
+          document.getElementById("strategy-type").innerHTML = `${activeTrades[symbol].strategy} <span class="strategy-indicator strategy-${activeTrades[symbol].strategy.toLowerCase()}">${activeTrades[symbol].strategy}</span>`;
+          document.getElementById("adaptive-score").textContent = activeTrades[symbol].adaptiveScore ? activeTrades[symbol].adaptiveScore.toFixed(1) : "-";
+          
+          document.getElementById("confidence-fill").style.width = `${activeTrades[symbol].confidence}%`;
+          document.getElementById("confidence-fill").textContent = `${activeTrades[symbol].confidence.toFixed(1)}%`;
+          document.getElementById("confidence-text").textContent = `Confidence: ${activeTrades[symbol].confidence.toFixed(1)}%`;
+        }
         
         return; // Only return if trade is still active
       } else {
         // Trade was closed in checkActiveTrade(), allow signal generation to continue
         tradeJustClosed = true;
-        console.log("🔄 Trade closed, looking for new signals...");
+        console.log(`🔄 Trade closed for ${symbol}, looking for new signals...`);
       }
     }
     
     // Continue with normal signal generation (either no active trade or trade just closed)
     const risk = document.getElementById("risk-level").value;
     const tpMultiplier = parseFloat(document.getElementById("tp-multiplier").value);
-    const symbol = document.getElementById("symbol").value.toUpperCase();
-    const sig = generateEnhancedSignal(candleBuffer, risk, tpMultiplier);
+    const sig = generateEnhancedSignal(candleBuffers[symbol], risk, tpMultiplier);
 
-    // Update enhanced UI
-    document.getElementById("signal-type").textContent = sig.signal;
-    document.getElementById("signal-type").className = sig.signal.toLowerCase();
-    document.getElementById("entry-price").textContent = sig.entry ? sig.entry.toFixed(5) : "-";
-    document.getElementById("tp-price").textContent = sig.tp ? sig.tp.toFixed(5) : "-";
-    document.getElementById("sl-price").textContent = sig.sl ? sig.sl.toFixed(5) : "-";
-    document.getElementById("risk-reward").textContent = sig.rr ? `1:${sig.rr.toFixed(2)}` : "-";
-    document.getElementById("volume-confirmation").textContent = sig.volumeConfirmation;
-    document.getElementById("market-regime").textContent = sig.marketRegime;
-    document.getElementById("trend-type").textContent = sig.trend;
-    document.getElementById("strategy-type").innerHTML = `${sig.strategy} <span class="strategy-indicator strategy-${sig.strategy.toLowerCase()}">${sig.strategy}</span>`;
-    document.getElementById("adaptive-score").textContent = sig.adaptiveScore ? sig.adaptiveScore.toFixed(1) : "-";
-    
-    document.getElementById("confidence-fill").style.width = `${sig.confidence}%`;
-    document.getElementById("confidence-fill").textContent = `${sig.confidence.toFixed(1)}%`;
-    document.getElementById("confidence-text").textContent = `Confidence: ${sig.confidence.toFixed(1)}%`;
+    // Store the signal for this symbol
+    lastSignals[symbol] = sig;
 
-    // Update market analysis
-    updateMarketAnalysis(candleBuffer);
+    // Update enhanced UI if this is the selected symbol
+    if (symbol === selectedSymbol) {
+      updateSignalDisplay(sig, symbol);
+    }
     
-    // Update strategy analysis
-    const marketConditions = analyzeMarketConditions(candleBuffer);
-    const strategySelection = adaptiveStrategySelection(candleBuffer);
-    updateStrategyAnalysis(marketConditions, strategySelection);
+    // Update multi-symbol signals overview
+    updateMultiSymbolSignals();
+
+    // Update market analysis if this is the selected symbol
+    if (symbol === selectedSymbol) {
+      updateMarketAnalysis(candleBuffers[symbol]);
+    }
+    
+    // Update strategy analysis if this is the selected symbol
+    if (symbol === selectedSymbol) {
+      const marketConditions = analyzeMarketConditions(candleBuffers[symbol]);
+      const strategySelection = adaptiveStrategySelection(candleBuffers[symbol]);
+      updateStrategyAnalysis(marketConditions, strategySelection);
+    }
 
     const currentTime = Date.now();
     
     if(sig.signal !== "HOLD" && sig.confidence >= 55) {
-      if(sig.signal !== lastSignal || currentTime - lastSignalTime > SIGNAL_COOLDOWN || tradeJustClosed){
-        lastSignal = sig.signal;
+      if(sig.signal !== lastSignals[symbol] || currentTime - lastSignalTime > SIGNAL_COOLDOWN || tradeJustClosed){
+        lastSignals[symbol] = sig;
         lastSignalTime = currentTime;
         signalCount++;
         performanceMetrics.signalsGenerated++;
@@ -3161,8 +3368,15 @@ function analyzeLive(){
         document.getElementById("active-strategy").textContent = sig.strategy;
         document.getElementById("active-strategy").className = `strategy-indicator strategy-${sig.strategy.toLowerCase()}`;
         
+        // 🔥 NEW: OVERRIDE SYSTEM - If there's already an active trade, close it and open new one
+        if (activeTrades[symbol] && activeTrades[symbol].open) {
+          console.log(`🔄 Override system: Closing existing trade for ${symbol} to open new signal`);
+          closeActiveTrade(symbol, "OVERRIDDEN", candleBuffers[symbol][candleBuffers[symbol].length-1].close);
+        }
+        
         // Open a trade instead of just logging it
         openNewTrade(
+          symbol,
           sig.signal, 
           sig.entry, 
           sig.tp, 
@@ -3186,7 +3400,7 @@ function analyzeLive(){
           }, 3000);
         }
         
-        console.log(`🔄 Adaptive signal generated: ${sig.signal} | Strategy: ${sig.strategy} | Confidence: ${sig.confidence} | Adaptive Score: ${sig.adaptiveScore}`);
+        console.log(`🔄 Adaptive signal generated for ${symbol}: ${sig.signal} | Strategy: ${sig.strategy} | Confidence: ${sig.confidence} | Adaptive Score: ${sig.adaptiveScore}`);
       }
     }
     
@@ -3199,8 +3413,26 @@ function analyzeLive(){
     updatePerformanceMetrics();
     
   } catch (error) {
-    logError(error, 'Live Analysis');
+    logError(error, `Live Analysis for ${symbol}`);
   }
+}
+
+function updateSignalDisplay(sig, symbol) {
+  document.getElementById("signal-type").textContent = sig.signal;
+  document.getElementById("signal-type").className = sig.signal.toLowerCase();
+  document.getElementById("entry-price").textContent = sig.entry ? sig.entry.toFixed(5) : "-";
+  document.getElementById("tp-price").textContent = sig.tp ? sig.tp.toFixed(5) : "-";
+  document.getElementById("sl-price").textContent = sig.sl ? sig.sl.toFixed(5) : "-";
+  document.getElementById("risk-reward").textContent = sig.rr ? `1:${sig.rr.toFixed(2)}` : "-";
+  document.getElementById("volume-confirmation").textContent = sig.volumeConfirmation;
+  document.getElementById("market-regime").textContent = sig.marketRegime;
+  document.getElementById("trend-type").textContent = sig.trend;
+  document.getElementById("strategy-type").innerHTML = `${sig.strategy} <span class="strategy-indicator strategy-${sig.strategy.toLowerCase()}">${sig.strategy}</span>`;
+  document.getElementById("adaptive-score").textContent = sig.adaptiveScore ? sig.adaptiveScore.toFixed(1) : "-";
+  
+  document.getElementById("confidence-fill").style.width = `${sig.confidence}%`;
+  document.getElementById("confidence-fill").textContent = `${sig.confidence.toFixed(1)}%`;
+  document.getElementById("confidence-text").textContent = `Confidence: ${sig.confidence.toFixed(1)}%`;
 }
 
 function renderSignalCard(symbol, sig) {
@@ -3232,6 +3464,9 @@ function renderSignalCard(symbol, sig) {
       <div><strong>Time:</strong> ${new Date().toLocaleString()}</div>
     </div>
   `;
+
+  // Make signal card clickable to switch to that symbol
+  div.onclick = () => selectSymbol(symbol);
 
   div.style.transform = 'translateY(-20px)';
   div.style.opacity = '0';
@@ -3279,7 +3514,7 @@ function logTradeClose(trade) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
     <td>${trade.openTime.toLocaleString()}</td>
-    <td>${document.getElementById("symbol").value.toUpperCase()}</td>
+    <td>${trade.symbol}</td>
     <td>${trade.signal}</td>
     <td>${trade.entry.toFixed(5)}</td>
     <td>${trade.tp.toFixed(5)}</td>
@@ -3298,15 +3533,15 @@ function logTradeClose(trade) {
 }
 
 function updateChart(){
-  if(candleBuffer.length === 0) return;
+  if(!candleBuffers[selectedSymbol] || candleBuffers[selectedSymbol].length === 0) return;
   
   try {
-    const lastSig = generateEnhancedSignal(candleBuffer, document.getElementById("risk-level").value, parseFloat(document.getElementById("tp-multiplier").value) );
-    const times = candleBuffer.map(c => new Date(c.time));
-    const opens = candleBuffer.map(c => c.open);
-    const highs = candleBuffer.map(c => c.high);
-    const lows = candleBuffer.map(c => c.low);
-    const closes = candleBuffer.map(c => c.close);
+    const lastSig = generateEnhancedSignal(candleBuffers[selectedSymbol], document.getElementById("risk-level").value, parseFloat(document.getElementById("tp-multiplier").value) );
+    const times = candleBuffers[selectedSymbol].map(c => new Date(c.time));
+    const opens = candleBuffers[selectedSymbol].map(c => c.open);
+    const highs = candleBuffers[selectedSymbol].map(c => c.high);
+    const lows = candleBuffers[selectedSymbol].map(c => c.low);
+    const closes = candleBuffers[selectedSymbol].map(c => c.close);
 
     const traceCandles = { x: times, open: opens, high: highs, low: lows, close: closes, type: "candlestick", name: "Candles" };
     const traceEntry = { x: [times[times.length-1]], y: [lastSig.entry], name: "Entry", mode: "lines+markers", line: { color: "yellow", width: 2 } };
@@ -3314,10 +3549,10 @@ function updateChart(){
     const traceSL = { x: [times[times.length-1]], y: [lastSig.sl], name: "SL", mode: "lines", line: { color: "red", width: 2, dash: "dot" } };
 
     // Add EMA200 to chart
-    const ema200 = EMA(candleBuffer, 200);
+    const ema200 = EMA(candleBuffers[selectedSymbol], 200);
     const traceEMA200 = { x: times, y: ema200, name: "EMA200", mode: "lines", line: { color: "purple", width: 1 } };
 
-    const fib = fibonacciLevels(candleBuffer);
+    const fib = fibonacciLevels(candleBuffers[selectedSymbol]);
     const shapes = [
       { type:"rect", xref:"x", yref:"y", x0: times[0], x1: times[times.length-1], y0: fib["0.382"]||0, y1: fib["0.618"]||0, fillcolor:"rgba(0,255,255,0.08)", line:{width:0} },
       { type:"rect", xref:"x", yref:"y", x0: times[0], x1: times[times.length-1], y0: fib["0.236"]||0, y1: fib["0.382"]||0, fillcolor:"rgba(0,255,255,0.04)", line:{width:0} },
@@ -3338,7 +3573,7 @@ function updateChart(){
       plot_bgcolor: "#0d0d0d", 
       font:{color:"#fff"}, 
       shapes,
-      title: `Market Regime: ${lastSig.marketRegime || 'N/A'} | Trend: ${lastSig.trend || 'N/A'} | Strategy: ${lastSig.strategy || 'N/A'} | Candles: ${candleBuffer.length}`
+      title: `${selectedSymbol} | Market Regime: ${lastSig.marketRegime || 'N/A'} | Trend: ${lastSig.trend || 'N/A'} | Strategy: ${lastSig.strategy || 'N/A'} | Candles: ${candleBuffers[selectedSymbol].length}`
     });
   } catch (error) {
     logError(error, 'Chart Update');
@@ -3346,7 +3581,9 @@ function updateChart(){
 }
 
 function unlockSignal(){
-  lastSignal = null;
+  if (lastSignals[selectedSymbol]) {
+    lastSignals[selectedSymbol] = null;
+  }
   document.getElementById("unlock-btn").style.display = "none";
   document.getElementById("status").textContent = "RUNNING";
 }
@@ -3355,7 +3592,7 @@ function unlockSignal(){
    BACKTEST FUNCTION (FIXED)
    ------------------------- */
 async function runBacktest(){
-  const symbol = document.getElementById("symbol").value.toUpperCase();
+  const symbol = selectedSymbol; // Use selected symbol for backtest
   const interval = document.getElementById("timeframe").value;
   const risk = document.getElementById("risk-level").value;
   const tpMultiplier = parseFloat(document.getElementById("tp-multiplier").value);
@@ -3700,7 +3937,7 @@ function generateBacktestSignal(data, riskLevel, tpMultiplier, strategy) {
 
 // Initialize the bot
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 Adaptive Trading Signal Bot Initialized');
+  console.log('🚀 Multi-Crypto Trading Signal Bot Initialized');
   document.getElementById("status").textContent = "READY";
   document.getElementById("status").style.color = "#ffaa33";
   
@@ -3712,6 +3949,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize Telegram settings
   updateTelegramSettings();
+  
+  // Initialize symbols
+  parseSymbols();
 });
 
 /* -------------------------
